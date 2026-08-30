@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>大红球实时分时</title>
+  <link rel="stylesheet" href="css/redball.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="summary-bar">
+      <div class="stock-identity">
+        <span id="stock-code" class="stock-code">等待代码</span>
+        <span id="stock-name" class="stock-name"></span>
+        <span id="trade-date" class="trade-date"></span>
+      </div>
+      <div id="summary-stats" class="summary-stats" aria-live="polite">
+        <span class="buy-stat">买 <strong id="buy-total">--</strong>万</span>
+        <span class="sell-stat">卖 <strong id="sell-total">--</strong>万</span>
+        <span class="net-stat">净 <strong id="net-total">--</strong>万</span>
+      </div>
+    </header>
+
+    <section id="chart-stage" class="chart-stage">
+      <div id="chart" class="chart" role="img" aria-label="大红球实时分时图"></div>
+      <canvas id="detail-connector" class="detail-connector" aria-hidden="true"></canvas>
+      <aside id="detail-panel" class="detail-panel" aria-live="polite"></aside>
+      <div id="empty-state" class="empty-state">等待通达信传入股票代码…</div>
+    </section>
+
+    <footer class="status-bar">
+      <span id="status-dot" class="status-dot status-waiting"></span>
+      <span id="status-text">等待通达信传入股票代码</span>
+      <span id="source-text" class="source-text"></span>
+    </footer>
+  </main>
+
+  <script src="vendor/echarts.js"></script>
+  <script src="js/tdx-context.js"></script>
+  <script src="js/redball-api.js"></script>
+  <script src="js/redball-chart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

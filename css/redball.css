@@ -1,0 +1,382 @@
+:root {
+  color-scheme: dark;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  --bg: #080b0f;
+  --panel: #0d1117;
+  --panel-strong: #101820;
+  --line: #273340;
+  --muted: #8c99a6;
+  --text: #e6edf3;
+  --buy: #ff3038;
+  --sell: #00d060;
+  --avg: #e0d400;
+  --price: #eeeeee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+  /* ✅ 新增：等宽数字，减少 150% 下数字宽度抖动 */
+  font-feature-settings: "tnum" 1;
+  /* ✅ 新增：恢复子像素渲染（比灰度更锐利） */
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr) 26px;
+  width: 100%;
+  height: 100vh;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at 78% 8%, rgba(39, 55, 72, 0.18), transparent 34%),
+    var(--bg);
+}
+
+.summary-bar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 14px;
+  border-bottom: 1px solid #1e2a35;
+  background: rgba(13, 18, 24, 0.96);
+  white-space: nowrap;
+}
+
+.stock-identity,
+.summary-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.stock-code {
+  color: #ffffff;
+  font: 700 17px/1 Consolas, monospace;
+}
+
+.stock-name {
+  overflow: hidden;
+  color: #f2f5f8;
+  font-size: 15px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+}
+
+.trade-date {
+  color: var(--muted);
+  font: 12px/1 Consolas, monospace;
+}
+
+.summary-stats {
+  justify-content: flex-end;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.summary-stats strong {
+  font: 700 14px/1 Consolas, monospace;
+}
+
+.buy-stat,
+.buy-stat strong {
+  color: #ff646a;
+}
+
+.sell-stat,
+.sell-stat strong {
+  color: #26e384;
+}
+
+.net-stat,
+.net-stat strong {
+  color: #ffd34d;
+}
+
+.chart-stage {
+  position: relative;
+  min-height: 0;
+  margin: 7px 9px 5px;
+  overflow: hidden;
+  border: 1px solid #26313d;
+  background: var(--panel);
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+}
+
+.empty-state {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #9aa6b2;
+  background: rgba(13, 17, 23, 0.9);
+  font-size: 16px;
+  text-align: center;
+}
+
+.empty-state[hidden] {
+  display: none;
+}
+
+.detail-connector {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.detail-connector.is-visible {
+  opacity: 1;
+}
+
+.detail-panel {
+  position: absolute;
+  z-index: 4;
+  display: none;
+  width: min(520px, 46%);
+  max-height: calc(100% - 28px);
+  overflow: auto;
+  padding: 10px 12px 12px;
+  border: 1px solid #334657;
+  border-left: 3px solid var(--buy);
+  background: rgba(7, 11, 15, 0.96);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.detail-panel.is-visible {
+  display: block;
+}
+
+.detail-panel.is-sell {
+  border-left-color: var(--sell);
+}
+
+.detail-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.detail-panel::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: #34424f;
+}
+
+.detail-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.detail-title .detail-main-buy {
+  color: #ff5b62;
+}
+
+.detail-title .detail-main-sell {
+  color: #22dd7d;
+}
+
+.detail-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 15px;
+  margin-bottom: 8px;
+  color: #ffd34d;
+  font-weight: 700;
+}
+
+.lot-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  margin: 7px 0 9px;
+}
+
+.lot-card {
+  padding: 5px 8px;
+  border: 1px solid #2e3944;
+  background: #111820;
+}
+
+.lot-card.buy {
+  color: #ff696f;
+  border-color: #713039;
+  background: #211014;
+}
+
+.lot-card.sell {
+  color: #35e98b;
+  border-color: #1d6843;
+  background: #091c13;
+}
+
+.detail-section-title {
+  margin: 7px 0 4px;
+  color: #d8dee9;
+  font-weight: 700;
+}
+
+.bucket-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid #283540;
+  background: #283540;
+}
+
+.bucket-grid > span {
+  padding: 3px 6px;
+  background: #0d1319;
+}
+
+.bucket-grid .bucket-buy {
+  color: #ff5b62;
+}
+
+.bucket-grid .bucket-sell {
+  color: #23d87a;
+}
+
+.detail-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 14px;
+  color: #c9d1d9;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 56px 24px minmax(62px, auto) minmax(54px, auto);
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.detail-row.buy {
+  color: #ff5b62;
+}
+
+.detail-row.sell {
+  color: #23d87a;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 0 11px;
+  border-top: 1px solid #18232d;
+  background: #0a0e13;
+  color: #aab5c0;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.status-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #77818b;
+  box-shadow: 0 0 0 2px rgba(119, 129, 139, 0.14);
+}
+
+.status-loading {
+  background: #e9b949;
+  box-shadow: 0 0 8px rgba(233, 185, 73, 0.7);
+}
+
+.status-ok {
+  background: #2ee184;
+  box-shadow: 0 0 8px rgba(46, 225, 132, 0.62);
+}
+
+.status-error {
+  background: #ff535c;
+  box-shadow: 0 0 8px rgba(255, 83, 92, 0.62);
+}
+
+.source-text {
+  overflow: hidden;
+  margin-left: auto;
+  color: #667481;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    grid-template-rows: 66px minmax(0, 1fr) 26px;
+  }
+
+  .summary-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+  }
+
+  .summary-stats {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .detail-panel {
+    width: calc(100% - 16px);
+    max-width: 520px;
+    max-height: 46%;
+  }
+
+  .detail-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ✅ 新增：通达信 150% 缩放下关键文字区域锐化 */
+/* 只针对最易模糊的区域，不影响其他元素 */
+.stock-code,
+.trade-date,
+.summary-stats,
+.summary-stats strong,
+.status-bar {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
