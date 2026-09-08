@@ -11,7 +11,8 @@
     '1000-2000万',
     '800-1000万',
     '500-800万',
-    '300-500万'
+    '300-500万', 
+    '100-300万'
   ];
 
   function number(value) {
@@ -193,7 +194,10 @@
     if (value >= 500) {
       return '500-800万';
     }
-    return '300-500万';
+    if (value >= 300) {
+      return '300-500万';
+    }
+    return '100-300万';
   }
 
   function bucketStats(rows) {

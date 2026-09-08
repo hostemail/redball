@@ -1,7 +1,7 @@
 (function (global) {
   'use strict';
 
-  var MIN_BIG_AMOUNT_WAN = 300;
+  var MIN_BIG_AMOUNT_WAN = 100;
   var MINUTE_HOSTS = [
     'push2his.eastmoney.com',
     'push2hisdelay.eastmoney.com',
