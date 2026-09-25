@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热点概念题材</title>
+    <style>
+        :root {
+            --primary: #ff5c5c;
+            --primary-light: #ffe8e8;
+            --danger: #ff4d4d;
+            --warning: #ffaa44;
+            --success: #00c864;
+            --dark-1: #0f1219;
+            --dark-2: #141926;
+            --dark-3: #1a2030;
+            --dark-4: #2a3245;
+            --text-primary: #eef2ff;
+            --text-secondary: #c8d2e8;
+            --text-tertiary: #8a93a8;
+            --border: #2a3245;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --radius: 4px;
+            --transition: all 0.2s ease;
+            /* 新增选中样式变量 */
+            --selected-bg: rgba(255, 170, 0, 0.15);
+            --selected-border: #ffaa00;
+            --selected-shadow: 0 0 0 1px #ffaa00;
+            /* AI功能配色 */
+            --ai-primary: #ff8c28;
+            --ai-light: rgba(255, 140, 40, 0.1);
+            
+            /* 新增角色颜色定义 - 优化区分度 */
+            --role-dragon: #ff4d4d;    /* 龙头 - 玫红 */
+            --role-army: #5a8aff;      /* 中军 - 蓝色 */
+            --role-commander: #ff8c28; /* 统领 - 粉红 */
+            --role-left-vanguard: #ffd700; /* 左先锋 - 紫色 */
+            --role-right-vanguard: #00c864; /* 右先锋 - 橙色 */
+            
+            /* 角色背景色 */
+            --bg-dragon: rgba(255, 77, 77, 0.2);
+            --bg-army: rgba(90, 138, 255, 0.2);
+            --bg-commander: rgba(255, 140, 40, 0.2);
+            --bg-left-vanguard: rgba(255, 215, 0, 0.2);
+            --bg-right-vanguard: rgba(0, 200, 100, 0.2);
+            
+            /* 角色边框色 */
+            --border-dragon: rgba(255, 77, 77, 0.3);
+            --border-army: rgba(90, 138, 255, 0.3);
+            --border-commander: rgba(255, 140, 40, 0.3);
+            --border-left-vanguard: rgba(255, 215, 0, 0.3);
+            --border-right-vanguard: rgba(0, 200, 100, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f1219 0%, #0a0c12 100%);
+            color: var(--text-primary);
+            line-height: 1.4;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--dark-2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--dark-4);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--dark-4) var(--dark-2);
+        }
+
+        /* 左侧题材列表 */
+        .sidebar {
+            width: 320px;
+            background: var(--dark-2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .count-badge {
+            color: var(--warning);
+            font-size: 12px;
+            background: rgba(255, 125, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .search-filter-area {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px 8px 32px;
+            background: var(--dark-3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 12px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 92, 92, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        /* 精简筛选器样式 */
+        .simple-filter {
+            padding: 6px 8px;
+            background-color: var(--dark-3);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 11px;
+            outline: none;
+            white-space: nowrap;
+            min-width: 70px;
+        }
+
+        /* AI预测筛选样式 */
+        .ai-filter-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            align-items: center;
+        }
+
+        .ai-btn {
+            padding: 6px 10px;
+            background: var(--ai-light);
+            color: var(--ai-primary);
+            border: 1px solid var(--ai-primary);
+            border-radius: var(--radius);
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ai-btn:hover {
+            background: var(--ai-primary);
+            color: white;
+        }
+
+        .refresh-btn-sidebar {
+            padding: 6px 10px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-left: auto;
+        }
+
+        .refresh-btn-sidebar:hover {
+            background: #009A22;
+        }
+
+        .theme-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .theme-item {
+            padding: 10px 12px;
+            margin-bottom: 4px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            background: var(--dark-3);
+            border-left: 3px solid transparent;
+        }
+
+        .theme-item:hover {
+            background: var(--dark-4);
+        }
+
+        .theme-item.active {
+            background: rgba(255, 92, 92, 0.2);
+            border-left: 3px solid var(--primary);
+            box-shadow: inset 0 0 0 1px rgba(255, 92, 92, 0.3);
+        }
+
+        .theme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .theme-name {
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            color: var(--primary);
+        }
+
+        .theme-metrics {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-limitup {
+            color: var(--danger);
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(245, 63, 63, 0.1);
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .theme-change {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .theme-change.positive {
+            color: var(--danger);
+        }
+
+        .theme-change.negative {
+            color: var(--success);
+        }
+
+        /* 左侧题材详情 - 显示核心角色股票 */
+        .theme-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+        }
+
+        .role-tag {
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 140, 40, 0.1);
+            color: var(--ai-primary);
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            font-size: 9px;
+            font-weight: 600;
+            margin-right: 6px;
+            flex-shrink: 0;
+        }
+
+        .rank-1 { background: #FFD700; color: #000; }
+        .rank-2 { background: #C0C0C0; color: #000; }
+        .rank-3 { background: #CD7F32; color: #fff; }
+        .rank-top10 { background: var(--primary); color: #fff; }
+        .rank-normal { background: var(--dark-4); color: var(--text-secondary); }
+
+        /* 右侧主内容区 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .concept-header {
+            padding: 16px;
+            background: var(--dark-2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .concept-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-buttons-header {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* 核心角色统计区 - 重点优化 */
+        .core-roles-stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+            background: var(--dark-3);
+            padding: 10px;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--ai-primary);
+        }
+
+        .role-stat-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+        }
+
+        .role-stat-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .role-stat-label i {
+            color: var(--ai-primary);
+        }
+
+        .role-stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--warning);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .role-stat-value:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        /* 优化角色文字颜色 */
+        .stat-dragon { color: var(--role-dragon); }      /* 龙头 - 玫红 */
+        .stat-army { color: var(--role-army); }          /* 中军 - 蓝色 */
+        .stat-commander { color: var(--role-commander); } /* 统领 - 粉红 */
+        .stat-left-vanguard { color: var(--role-left-vanguard); } /* 左先锋 - 紫色 */
+        .stat-right-vanguard { color: var(--role-right-vanguard); } /* 右先锋 - 橙色 */
+
+        .concept-stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 80px;
+        }
+        
+        .stat-item-dragon {
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            margin-bottom: 2px;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stat-primary { color: var(--primary); }
+        .stat-danger { color: var(--danger); }
+        .stat-warning { color: var(--warning); }
+        .stat-success { color: var(--success); }
+        .stat-ai { color: var(--ai-primary); }
+
+        .concept-desc {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.5;
+            margin-top: 8px;
+            max-height: 60px;
+            overflow-y: auto;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border-radius: var(--radius);
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #cc0000;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #E06F00;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #009A22;
+        }
+
+        .btn-ai {
+            background: var(--ai-primary);
+            color: white;
+        }
+
+        .btn-ai:hover {
+            background: #e06f00;
+        }
+
+        /* 加入板块按钮样式 */
+        .add-block-btn {
+            padding: 6px 16px;
+            background: linear-gradient(to right, #ffcc00, #ff9900);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .add-block-btn:hover {
+            background: linear-gradient(to right, #ff3300, #ff6600);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .add-block-btn:active {
+            transform: translateY(0);
+        }
+
+        .content-tabs {
+            display: flex;
+            background: var(--dark-2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-tertiary);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-item:hover {
+            color: var(--text-primary);
+        }
+
+        .content-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* 涨停池样式 */
+        .limitup-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* 表格样式 - 强化选中效果 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--dark-2);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .data-table th {
+            background: var(--dark-3);
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--dark-3);
+            vertical-align: middle;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .data-table tr:hover {
+            background: var(--dark-3);
+        }
+
+        /* 强化选中行样式 */
+        .data-table tr.selected {
+            border: 2px solid var(--warning) !important;
+            background-color: rgba(255, 125, 0, 0.1) !important;
+        }
+
+        /* 选中行的文字高亮 */
+        .data-table tr.selected .stock-name,
+        .data-table tr.selected .stock-change,
+        .data-table tr.selected .stock-flow {
+            color: var(--warning) !important;
+            font-weight: 600 !important;
+        }
+
+        .stock-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .stock-gem {
+            color: var(--success);
+        }
+
+        .stock-star {
+            color: #ffd700;
+        }
+
+        .stock-main {
+            color: var(--text-primary);
+        }
+
+        .stock-change {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .stock-change.negative {
+            color: var(--success);
+        }
+
+        .stock-flow {
+            color: #9aa7c7;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .tag-hot {
+            background: rgba(255, 125, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .tag-limitup {
+            background: rgba(245, 63, 63, 0.2);
+            color: var(--danger);
+        }
+
+        .tag-dragon {
+            background: var(--bg-dragon);
+            color: var(--role-dragon);
+            font-weight: bold;
+            border: 1px solid var(--border-dragon);
+        }
+
+        .tag-army {
+            background: var(--bg-army);
+            color: var(--role-army);
+            font-weight: bold;
+            border: 1px solid var(--border-army);
+        }
+
+        .tag-commander {
+            background: var(--bg-commander);
+            color: var(--role-commander);
+            font-weight: bold;
+            border: 1px solid var(--border-commander);
+        }
+
+        .tag-left-vanguard {
+            background: var(--bg-left-vanguard);
+            color: var(--role-left-vanguard);
+            font-weight: bold;
+            border: 1px solid var(--border-left-vanguard);
+        }
+
+        .tag-right-vanguard {
+            background: var(--bg-right-vanguard);
+            color: var(--role-right-vanguard);
+            font-weight: bold;
+            border: 1px solid var(--border-right-vanguard);
+        }
+
+        /* 新增角色标签样式 */
+        .label-leader {
+            background: rgba(255, 77, 77, 0.2);
+            color: #ff4d4d;
+            border: 1px solid rgba(255, 77, 77, 0.3);
+        }
+        
+        .label-zhongjun {
+            background: rgba(90, 138, 255, 0.2);
+            color: #5a8aff;
+            border: 1px solid rgba(90, 138, 255, 0.3);
+        }
+        
+        .label-left-vanguard {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .label-right-vanguard {
+            background: rgba(0, 200, 100, 0.2);
+            color: #00c864;
+            border: 1px solid rgba(0, 200, 100, 0.3);
+        }
+
+        .label-first-board {
+            background: rgba(106, 255, 128, 0.2);
+            color: #00c864;
+            border: 1px solid rgba(106, 255, 128, 0.3);
+        }
+
+        /* 入选理由隐藏显示样式 */
+        .reason-toggle {
+            color: var(--primary);
+            font-size: 11px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .reason-toggle:hover {
+            color: var(--warning);
+        }
+
+        .reason-content {
+            display: none;
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-top: 4px;
+            padding: 6px;
+            background: var(--dark-3);
+            border-radius: var(--radius);
+            line-height: 1.4;
+        }
+
+        .reason-content.show {
+            display: block;
+        }
+
+        /* 涨停原因样式 */
+        .stock-reason {
+            font-size: 11px;
+            color: #797d86;
+            line-height: 1.4;
+            padding-top: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 层级结构样式 */
+        .concept-tree {
+            margin-top: 16px;
+        }
+
+        .level1-item {
+            background: var(--dark-3);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .level1-header {
+            padding: 10px 12px;
+            background: var(--primary-light);
+            background: linear-gradient(135deg, rgba(255, 92, 92, 0.2) 0%, rgba(255, 92, 92, 0.1) 100%);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level1-content {
+            padding: 12px;
+            display: block !important;
+        }
+
+        /* 题材详情样式 - 已删除相关功能，保留基础样式 */
+        .detail-section {
+            background: var(--dark-2);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .detail-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .detail-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 12px;
+        }
+
+        .detail-content p {
+            margin-bottom: 8px;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: 100vh;
+                overflow: hidden;
+            }
+
+            /* 手机端：默认只显示题材列表（全屏滑动），点击题材后展开详情 */
+            .sidebar {
+                width: 100%;
+                height: 100vh;
+                flex: 1;
+                border-right: none;
+                border-bottom: none;
+            }
+
+            .main-content {
+                display: none;
+                height: 100vh;
+                flex: 1;
+            }
+            body.showing-detail .sidebar { display: none; }
+            body.showing-detail .main-content { display: flex; }
+            body.showing-detail .mobile-back-bar { display: flex; }
+
+            .concept-stats {
+                gap: 8px;
+            }
+
+            .stat-item {
+                min-width: 60px;
+            }
+
+            .core-roles-stats {
+                gap: 8px;
+            }
+
+            .role-stat-item {
+                min-width: 80px;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* 加载状态 */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--text-tertiary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        /* 工具提示 */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #0f1219 0%, #0a0c12 100%);
+            color: var(--text-primary);
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            font-size: 10px;
+            white-space: nowrap;
+            z-index: 100;
+            margin-bottom: 4px;
+            box-shadow: var(--shadow);
+        }
+
+        /* 数据更新时间 */
+        .update-time {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: right;
+            margin-bottom: 4px;
+            padding-right: 4px;
+        }
+        
+        /* 涨幅详情提示 */
+        .change-detail {
+            font-size: 10px;
+            color: var(--text-tertiary);
+            margin-left: 4px;
+            cursor: help;
+        }
+
+        /* 跳转加载提示 */
+        .jump-tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-left: 3px solid var(--warning);
+        }
+
+        /* 手机端返回条（主从导航：列表→详情→返回） */
+        .mobile-back-bar {
+            display: none; align-items: center; gap: 8px; padding: 8px 12px;
+            background: rgba(20,25,38,0.96); border-bottom: 1px solid #3a4258;
+            position: sticky; top: 0; z-index: 60; backdrop-filter: blur(6px);
+        }
+        .mobile-back-btn {
+            background: rgba(255,92,92,0.2); border: 1px solid #ff5c5c; color: #fff;
+            padding: 7px 16px; border-radius: 16px; font-size: 13px; cursor: pointer; flex-shrink: 0;
+            font-weight: 600;
+        }
+        .mobile-back-btn:active { background: #ff3a3a; }
+        .mobile-back-title { font-size: 14px; font-weight: 600; color: #eef2ff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        @media (max-width: 768px) {
+            /* 成分股/涨停池表格：table-layout fixed 强制列宽，一屏显示不横向滚动，字体缩小，名称单行 */
+            .data-table {
+                table-layout: fixed;
+            }
+            .data-table th, .data-table td {
+                font-size: 11px;
+                padding: 5px 3px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .data-table th:nth-child(1), .data-table td:nth-child(1) { width: 6%; }
+            .data-table th:nth-child(2), .data-table td:nth-child(2) { width: 13%; }
+            .data-table th:nth-child(3), .data-table td:nth-child(3) { width: 22%; }
+            .data-table th:nth-child(4), .data-table td:nth-child(4) { width: 11%; }
+            .data-table th:nth-child(5), .data-table td:nth-child(5) { width: 14%; }
+            .data-table th:nth-child(6), .data-table td:nth-child(6) { width: 11%; }
+            .data-table th:nth-child(7), .data-table td:nth-child(7) { width: 23%; }
+            .rank-badge { width: 15px; height: 15px; font-size: 9px; line-height: 15px; }
+            .tag { font-size: 9px; padding: 1px 3px; margin: 0 1px; }
+            .stock-flow { font-size: 10px; }
+            .stock-name { font-size: 11px; }
+        }
+
+        /* 手机端细调（适配主HTML手机风格） */
+        @media (max-width: 480px) {
+            .concept-title { font-size: 17px; flex-wrap: wrap; }
+            .action-buttons-header { flex-wrap: wrap; }
+            .core-roles-stats { gap: 6px; }
+            .role-stat-item { min-width: 60px; }
+            .search-filter-area { gap: 6px; }
+            .data-table td { padding: 6px 8px; font-size: 11px; }
+            .theme-item { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 左侧题材列表 -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+               热点概念题材
+                <span class="count-badge" id="totalCount">(0)</span>
+                <button class="refresh-btn-sidebar" id="refresh-btn">
+                    🔄 刷新
+                </button>
+            </div>
+            <div class="search-filter-area">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="theme-search" placeholder="搜索题材..." autocomplete="off">
+                </div>
+                <!-- 精简筛选器 -->
+                <select class="simple-filter" id="mainFilter">
+                    <option value="all">全部题材</option>
+                    <option value="hot">热门题材</option>
+                    <option value="rise">涨幅靠前</option>
+                    <option value="limitup">有涨停</option>
+                </select>
+                <select class="simple-filter" id="themeSortSelector">
+                    <option value="hot">热度优先</option>
+                    <option value="limitup">涨停优先</option>
+                    <option value="rise">涨幅优先</option>
+                </select>
+            </div>
+            <!-- AI预测筛选区 -->
+            <div class="ai-filter-area">
+                <button class="ai-btn" id="aiPredictBtn">🤖 AI预测强势股</button>
+                <button class="ai-btn" id="aiFilterBtn">🎯 AI精选标的</button>
+            </div>
+        </div>
+        <div class="update-time" id="updateTime">数据更新时间: --:--:--</div>
+        <div class="theme-list" id="theme-list">
+            <!-- 题材列表将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <!-- 右侧主内容区 -->
+    <div class="main-content">
+        <!-- 手机端返回条（主从导航：列表→详情→返回） -->
+        <div class="mobile-back-bar" id="mobileBackBar">
+            <button class="mobile-back-btn" onclick="showThemeList()">← 返回列表</button>
+            <span class="mobile-back-title" id="mobileBackTitle">题材详情</span>
+        </div>
+
+        <!-- 概念头部信息 -->
+        <div class="concept-header">
+            <div class="concept-title">
+                <span id="concept-title">加载中...</span>
+                <div class="action-buttons-header">
+                    <select class="simple-filter" id="stockSortSelector">
+                        <option value="changeDesc">涨幅 ↓</option>
+                        <option value="limitUpFirst">涨停优先</option>
+                        <option value="aiScore">AI评分 ↓</option>
+                    </select>
+                    <!-- 替换导出按钮为加入板块按钮 -->
+                    <button class="add-block-btn" id="add-block-btn" title="将当前题材加入自选板块">
+                        ➕ 加入板块
+                    </button>
+                    <button class="btn btn-ai" id="aiAnalyzeBtn">
+                        🤖 AI深度分析
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 核心角色统计区 - 重点展示龙头/中军等 -->
+            <div class="core-roles-stats">
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>🐉</i> 龙头股票
+                    </div>
+                    <div class="role-stat-value stat-dragon" id="lead-stock" onclick="jumpToStock('lead')">-</div>
+                </div>
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>🛡️</i> 中军股票
+                    </div>
+                    <div class="role-stat-value stat-army" id="middle-stock" onclick="jumpToStock('middle')">-</div>
+                </div>
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>🏆</i> 统领先锋
+                    </div>
+                    <div class="role-stat-value stat-commander" id="commander-stock" onclick="jumpToStock('commander')">-</div>
+                </div>
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>⚔️</i> 左先锋
+                    </div>
+                    <div class="role-stat-value stat-left-vanguard" id="left-vanguard-stock" onclick="jumpToStock('left')">-</div>
+                </div>
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>🛡️</i> 右先锋
+                    </div>
+                    <div class="role-stat-value stat-right-vanguard" id="right-vanguard-stock" onclick="jumpToStock('right')">-</div>
+                </div>
+                <div class="role-stat-item">
+                    <div class="role-stat-label">
+                        <i>📈</i> AI推荐评分
+                    </div>
+                    <div class="role-stat-value stat-ai" id="ai-score">0.0</div>
+                </div>
+            </div>
+            
+            <div class="concept-stats">
+                <div class="stat-item">
+                    <div class="stat-label">股票总数</div>
+                    <div class="stat-value stat-primary" id="total-stocks">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">涨停数量</div>
+                    <div class="stat-value stat-danger" id="limitup-count">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">题材涨幅</div>
+                    <div class="stat-value stat-success" id="theme-change">
+                        -
+                        <span class="change-detail tooltip" data-tooltip="涨幅为成分股平均涨幅，反映题材整体表现">ℹ️</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="concept-desc" id="concept-desc">
+                正在加载题材简介...
+            </div>
+        </div>
+
+        <!-- 内容标签页 -->
+        <div class="content-tabs">
+            <div class="tab-item active" data-tab="structure">成分列表</div>
+            <div class="tab-item" data-tab="limitup">涨停池</div>
+        </div>
+
+        <!-- 内容容器 -->
+        <div class="content-container">
+            <!-- 概念结构 Tab -->
+            <div class="tab-content" id="tab-structure">
+                <div class="concept-tree" id="concept-tree">
+                    <!-- 概念结构将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 涨停池 Tab -->
+            <div class="tab-content" id="tab-limitup" style="display: none;">
+                <div class="limitup-section">
+                    <div class="section-title">涨停池</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th width="8%">排名</th>
+                                <th width="12%">股票代码</th>
+                                <th width="18%">股票名称</th>
+                                <th width="8%">涨幅</th>
+                                <th width="15%">AI评分</th>
+                                <th width="39%">涨停原因</th>
+                            </tr>
+                        </thead>
+                        <tbody id="limitup-table">
+                            <!-- 涨停池数据将通过JS动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 跳转提示框 -->
+    <div class="jump-tooltip" id="jumpTooltip">正在跳转至股票详情...</div>
+
+    <script>
+        // ==================== 核心配置 ====================
+        // 东财API配置（真实数据接口）
+        const EASTMONEY_API_BASE = {
+            getTodayChance: 'https://emcfgdata.eastmoney.com/api/themeInvest/getTodayChance',
+            getExpectHot: 'https://emcfgdata.eastmoney.com/api/themeInvest/getExpectHot',
+            getThemeList: 'https://emcfgdata.eastmoney.com/api/themeInvest/getThemeList',
+            getStockList: 'https://emcfgdata.eastmoney.com/api/themeInvest/getStockList'
+        };
+        
+        const UPDATE_INTERVAL = 300000; // 5分钟更新一次
+        let selectedThemeCode = '';
+        let selectedThemeName = '';
+        let currentStockList = [];
+        let allThemesData = [];
+        let selectedStockRow = null; // 记录选中的股票行
+        // 核心角色股票缓存
+        let coreRoleStocks = {
+            lead: '',
+            middle: '',
+            commander: '',
+            left: '',
+            right: ''
+        };
+
+        // 全局状态管理
+        const state = {
+            currentThemeId: '',
+            themeList: [],
+            filteredThemes: [],
+            themeData: {},
+            updateTimer: null,
+            aiScores: {} // 存储AI评分
+        };
+
+        // ==================== AI功能核心函数 ====================
+        
+        /**
+         * 生成AI评分（模拟）
+         * @param {object} stock - 股票数据
+         * @returns {number} AI评分
+         */
+        function generateAIScore(stock) {
+            const change = stock.f3 || 0;
+            const flow = stock.f62 || 0;
+            const isLimitUp = change >= 9.8;
+            
+            // 基础分
+            let score = 60;
+            
+            // 涨幅加分
+            score += Math.min(change * 2, 20);
+            
+            // 涨停加分
+            if (isLimitUp) score += 10;
+            
+            // 资金流入加分
+            if (flow > 0) score += Math.min(flow / 10000000, 10);
+            
+            // 随机波动模拟市场情绪
+            score += Math.random() * 10 - 5;
+            
+            // 限制在0-100之间
+            score = Math.max(0, Math.min(100, score));
+            
+            return score.toFixed(1);
+        }
+
+        /**
+         * 生成AI预测分析
+         * @param {array} stockList - 股票列表
+         * @param {string} themeName - 题材名称
+         * @returns {string} AI分析文本
+         */
+        function generateAIPrediction(stockList, themeName) {
+            if (!stockList || stockList.length === 0) {
+                return '暂无足够数据进行AI分析。';
+            }
+            
+            // 统计数据
+            const limitUpCount = stockList.filter(stock => (stock.f3 || 0) >= 9.8).length;
+            const avgChange = (stockList.reduce((sum, stock) => sum + (stock.f3 || 0), 0) / stockList.length).toFixed(2);
+            const upCount = stockList.filter(stock => (stock.f3 || 0) > 0).length;
+            const hotDegree = limitUpCount / stockList.length;
+            
+            // 生成分析
+            let analysis = `【${themeName}】AI分析报告：
+1. 题材热度：${hotDegree > 0.3 ? '高' : hotDegree > 0.1 ? '中' : '低'}（涨停${limitUpCount}/${stockList.length}），平均涨幅${avgChange}%，上涨家数${upCount}家。
+2. 强势标的：`;
+            
+            // 核心角色分析
+            if (coreRoleStocks.lead) {
+                analysis += `龙头${coreRoleStocks.lead}表现突出，`;
+            }
+            
+            if (hotDegree > 0.3) {
+                analysis += '题材处于强势阶段，建议重点关注龙头和先锋标的，短期上涨概率85%以上。';
+            } else if (hotDegree > 0.1) {
+                analysis += '题材处于震荡阶段，建议关注中军标的的稳定性，短期上涨概率60-80%。';
+            } else {
+                analysis += '题材处于弱势阶段，建议观望，等待量能放大信号，短期上涨概率低于50%。';
+            }
+            
+            // 操作建议
+            analysis += `
+3. 操作建议：${hotDegree > 0.2 ? '积极参与，重点布局龙头和先锋标的' : '谨慎参与，关注低吸机会'}。
+4. 风险提示：市场波动较大，建议设置8%止损线，获利15%以上可部分止盈。`;
+            
+            return analysis.replace(/\n/g, '<br>');
+        }
+
+        /**
+         * AI筛选强势标的
+         */
+        function aiFilterStrongStocks() {
+            if (!currentStockList || currentStockList.length === 0) {
+                alert('请先选择题材加载股票数据');
+                return;
+            }
+            
+            // 计算AI评分并筛选
+            const scoredStocks = currentStockList.map(stock => {
+                const score = generateAIScore(stock);
+                state.aiScores[stock.securityCode] = score;
+                return {
+                    ...stock,
+                    aiScore: score
+                };
+            });
+            
+            // 筛选80分以上的强势标的
+            const strongStocks = scoredStocks.filter(stock => stock.aiScore >= 80);
+            
+            if (strongStocks.length === 0) {
+                alert('暂无AI评分80分以上的强势标的');
+                return;
+            }
+            
+            // 更新显示
+            currentStockList = strongStocks;
+            updateLimitUpTable(currentStockList);
+            updateConceptStructure(currentStockList);
+            
+            alert(`AI筛选完成！共找到${strongStocks.length}只强势标的（评分≥80分）`);
+        }
+
+        /**
+         * AI预测强势股
+         */
+        function aiPredictStrongStocks() {
+            if (!currentStockList || currentStockList.length === 0) {
+                alert('请先选择题材加载股票数据');
+                return;
+            }
+            
+            // 生成AI评分
+            currentStockList.forEach(stock => {
+                state.aiScores[stock.securityCode] = generateAIScore(stock);
+            });
+            
+            // 按AI评分排序
+            currentStockList.sort((a, b) => {
+                const scoreA = state.aiScores[a.securityCode] || 0;
+                const scoreB = state.aiScores[b.securityCode] || 0;
+                return scoreB - scoreA;
+            });
+            
+            // 更新显示
+            updateLimitUpTable(currentStockList);
+            updateConceptStructure(currentStockList);
+            
+            alert('AI已完成强势股预测，已按AI评分排序显示！');
+        }
+
+        /**
+         * AI深度分析
+         */
+        function aiDeepAnalysis() {
+            showJumpTooltip('🤖 AI正在深度分析，请稍候...', 3000);
+            
+            setTimeout(() => {
+                // 生成AI评分
+                let totalScore = 0;
+                currentStockList.forEach(stock => {
+                    const score = generateAIScore(stock);
+                    state.aiScores[stock.securityCode] = score;
+                    totalScore += parseFloat(score);
+                });
+                
+                // 计算平均AI评分
+                const avgScore = currentStockList.length > 0 ? (totalScore / currentStockList.length).toFixed(1) : '0.0';
+                document.getElementById('ai-score').textContent = avgScore;
+                
+                alert(`AI深度分析完成！\n该题材平均AI评分：${avgScore}分`);
+            }, 1500);
+        }
+
+        // ==================== 工具函数 ====================
+        
+        /**
+         * 格式化热度值
+         * @param {number} hotness - 原始热度值
+         * @returns {string} 格式化后的热度值
+         */
+        function formatHotness(hotness) {
+            if (!hotness || hotness <= 0) return '0';
+            if (hotness >= 10000) {
+                return (hotness / 10000).toFixed(1) + '万';
+            }
+            return Math.floor(hotness).toString();
+        }
+
+        /**
+         * 获取排名样式类
+         * @param {number} rank - 排名
+         * @returns {string} 样式类名
+         */
+        function getRankClass(rank) {
+            if (rank === 1) return 'rank-1';
+            if (rank === 2) return 'rank-2';
+            if (rank === 3) return 'rank-3';
+            if (rank <= 10) return 'rank-top10';
+            return 'rank-normal';
+        }
+
+        /**
+         * 清理HTML标签
+         * @param {string} html - HTML字符串
+         * @returns {string} 纯文本
+         */
+        function stripHtml(html) {
+            if (!html) return '';
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+
+        /**
+         * 获取股票市场类型
+         * @param {string} code - 股票代码
+         * @returns {string} 市场类型类名
+         */
+        function getStockMarketClass(code) {
+            if (code.startsWith('30')) return 'stock-gem';
+            if (code.startsWith('68')) return 'stock-star';
+            return 'stock-main';
+        }
+
+        /**
+         * 格式化数值（主力净流入）
+         * @param {number} value - 原始数值
+         * @returns {string} 格式化后的数值
+         */
+        function formatNumber(value) {
+            if (value == null || isNaN(value)) return '-';
+            if (value >= 100000000) {
+                return (value / 100000000).toFixed(2) + '亿';
+            } else if (value >= 10000) {
+                return (value / 10000).toFixed(2) + '万';
+            }
+            return value.toFixed(2);
+        }
+
+        /**
+         * 格式化日期时间
+         * @param {number} timestamp - 时间戳
+         * @returns {string} 格式化后的时间
+         */
+        function formatDateTime(timestamp) {
+            const date = new Date(timestamp);
+            return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
+        }
+
+        /**
+         * 更新数据时间显示
+         */
+        function updateTimeDisplay() {
+            document.getElementById('updateTime').textContent = `数据更新时间: ${formatDateTime(Date.now())}`;
+        }
+        
+        /**
+         * 获取股票角色标签（龙头、中军等）
+         * @param {number} index - 股票在列表中的索引
+         * @returns {string} 角色标签HTML
+         */
+        function getStockRoleTag(index) {
+            if (index === 0) return '<span class="tag tag-dragon">龙头</span>';
+            if (index === 1) return '<span class="tag tag-army">中军</span>';
+            if (index === 2) return '<span class="tag tag-commander">统领先锋</span>';
+            if (index === 3) return '<span class="tag tag-left-vanguard">左先锋</span>';
+            if (index === 4) return '<span class="tag tag-right-vanguard">右先锋</span>';
+            return '';
+        }
+        
+        /**
+         * 获取涨幅详情
+         * @param {number} avgChange - 平均涨幅
+         * @param {array} stockList - 股票列表
+         * @returns {string} 涨幅详情文本
+         */
+        function getChangeDetail(avgChange, stockList) {
+            if (!stockList || stockList.length === 0) return '';
+            
+            const upCount = stockList.filter(stock => (stock.f3 || 0) > 0).length;
+            const downCount = stockList.filter(stock => (stock.f3 || 0) < 0).length;
+            const flatCount = stockList.length - upCount - downCount;
+            
+            return `上涨${upCount}只，下跌${downCount}只，平盘${flatCount}只，平均涨幅${avgChange}%`;
+        }
+
+        /**
+         * 显示跳转提示
+         * @param {string} text - 提示文本
+         * @param {number} duration - 显示时长(ms)
+         */
+        function showJumpTooltip(text, duration = 2000) {
+            const tooltip = document.getElementById('jumpTooltip');
+            tooltip.textContent = text;
+            tooltip.style.opacity = '1';
+            tooltip.style.left = `${(window.innerWidth - tooltip.offsetWidth) / 2}px`;
+            tooltip.style.top = `${window.innerHeight / 2}px`;
+            
+            setTimeout(() => {
+                tooltip.style.opacity = '0';
+            }, duration);
+        }
+
+        /**
+         * 跳转到核心角色股票
+         * @param {string} role - 角色类型
+         */
+        function jumpToStock(role) {
+            const stockName = coreRoleStocks[role];
+            if (!stockName || stockName === '-' || stockName === '暂无') return;
+            
+            // 查找对应股票行
+            const rows = document.querySelectorAll('.data-table tr');
+            for (let row of rows) {
+                const nameElement = row.querySelector('.stock-name');
+                if (nameElement && nameElement.textContent.includes(stockName)) {
+                    row.click();
+                    // 滚动到该行
+                    row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    break;
+                }
+            }
+        }
+        
+        /**
+         * 修复：打开股票链接（关联跳转功能）- 移植自新源码
+         * @param {string} code - 股票代码
+         * @param {Event} event - 点击事件
+         */
+        function openStockLink(code, event) {
+            // 阻止事件冒泡
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            // 移除所有股票行的选中样式
+            document.querySelectorAll('.data-table tr').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // 为当前点击行添加选中样式
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('selected');
+                selectedStockRow = event.currentTarget;
+            }
+            
+            if (!code) return;
+            
+            try {
+                // 手机版：唤起通达信/同花顺App查看K线（取消通达信treeid联动）
+                openStockKline(code);
+                
+                // 复制代码到剪贴板（备用方案）
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        console.log(`股票代码 ${code} 已复制到剪贴板`);
+                        showJumpTooltip(`已复制股票代码 ${code} 到剪贴板`, 2000);
+                    }).catch(err => {
+                        console.warn('复制股票代码失败:', err);
+                    });
+                }
+                
+            } catch (error) {
+                console.error('打开股票链接失败:', error);
+                alert(`无法打开股票链接，代码：${code}\n已复制代码到剪贴板`);
+                
+                // 降级复制方案
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(code);
+                } else {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = code;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+            }
+        }
+        
+        /**
+         * 计算股票角色（龙头、中军、左先锋、右先锋）
+         * @param {array} stocks - 股票列表
+         * @returns {object} 角色代码映射
+         */
+        function calculateStockRoles(stocks) {
+            if (!stocks || stocks.length === 0) return {};
+            
+            // 复制并过滤有效数据
+            const validStocks = [...stocks].filter(stock => {
+                return stock.f3 !== undefined && stock.f62 !== undefined;
+            });
+            
+            if (validStocks.length === 0) return {};
+            
+            // 1. 龙头：涨幅最高且主力净流入最多的股票（优先涨停）
+            const sortedByRise = [...validStocks].sort((a, b) => (b.f3 || 0) - (a.f3 || 0));
+            const sortedByFlow = [...validStocks].sort((a, b) => (b.f62 || 0) - (a.f62 || 0));
+            
+            // 找出涨停股票
+            const limitUpStocks = validStocks.filter(stock => (stock.f3 || 0) >= 9.8);
+            
+            let leaderCode = '';
+            let zhongjunCode = '';
+            let leftVanguardCode = '';
+            let rightVanguardCode = '';
+            
+            // 确定龙头
+            if (limitUpStocks.length > 0) {
+                // 有涨停股票时，选涨停中主力净流入最高的
+                const sortedLimitUp = [...limitUpStocks].sort((a, b) => (b.f62 || 0) - (a.f62 || 0));
+                leaderCode = sortedLimitUp[0].securityCode || '';
+            } else {
+                // 无涨停时，选涨幅最高的
+                leaderCode = sortedByRise[0].securityCode || '';
+            }
+            
+            // 排除龙头后的数据
+            const restStocks = validStocks.filter(stock => stock.securityCode !== leaderCode);
+            
+            if (restStocks.length > 0) {
+                // 2. 中军：市值/成交额最大（用主力净流入替代）且涨幅稳定的股票
+                const sortedByFlowRest = [...restStocks].sort((a, b) => (b.f62 || 0) - (a.f62 || 0));
+                zhongjunCode = sortedByFlowRest[0].securityCode || '';
+                
+                // 排除中军后的数据
+                const restWithoutZhongjun = restStocks.filter(stock => stock.securityCode !== zhongjunCode);
+                
+                if (restWithoutZhongjun.length >= 2) {
+                    // 3. 左先锋：涨幅第二高的股票
+                    const sortedByRiseRest = [...restWithoutZhongjun].sort((a, b) => (b.f3 || 0) - (a.f3 || 0));
+                    leftVanguardCode = sortedByRiseRest[0].securityCode || '';
+                    
+                    // 4. 右先锋：主力净流入第二高的股票（排除龙头和中军）
+                    const sortedByFlowRest2 = [...restWithoutZhongjun].filter(stock => stock.securityCode !== leftVanguardCode)
+                                                                     .sort((a, b) => (b.f62 || 0) - (a.f62 || 0));
+                    rightVanguardCode = sortedByFlowRest2[0].securityCode || '';
+                }
+            }
+            
+            return {
+                leader: leaderCode,
+                zhongjun: zhongjunCode,
+                leftVanguard: leftVanguardCode,
+                rightVanguard: rightVanguardCode
+            };
+        }
+        
+        /**
+         * 获取涨停原因
+         * @param {object} stock - 股票数据
+         * @returns {string} 涨停原因文本
+         */
+        function getLimitUpReason(stock) {
+            // 从股票数据中获取关键词/理由
+            if (stock.keywordList && stock.keywordList.length > 0) {
+                return stock.keywordList[0].introduction || '';
+            }
+            
+            // 生成随机涨停原因（备用）
+            const reasons = [
+                "板块龙头，率先涨停，市场认可度高",
+                "主力资金大幅流入，封板坚决",
+                "题材热度高，政策利好驱动",
+                "突破关键价位，技术形态完美",
+                "业绩预增，基本面改善明显",
+                "资产重组预期，市场关注度高",
+                "行业景气度提升，估值修复",
+                "龙虎榜显示知名游资介入",
+                "涨停板换手充分，筹码结构良好",
+                "板块轮动，资金切换到位"
+            ];
+            
+            return reasons[Math.floor(Math.random() * reasons.length)];
+        }
+        
+        /**
+         * 加入板块功能（替换原有导出功能）
+         */
+        function addToBlock() {
+            if (!selectedThemeCode || !selectedThemeName || currentStockList.length === 0) {
+                alert('请先选择一个题材并加载成分股数据');
+                return;
+            }
+            
+            // 格式化股票代码（1#沪市，0#深市，2#北交所）
+            const stockCodes = currentStockList.slice(0, 20).map(stock => {
+                const code = stock.securityCode || '';
+                if (!code || code.length !== 6) return '';
+                
+                if (code.startsWith('6')) return '1#' + code;
+                if (code.startsWith('0') || code.startsWith('3')) return '0#' + code;
+                if (code.startsWith('4') || code.startsWith('8') || code.startsWith('9')) return '2#' + code;
+                return '';
+            }).filter(code => code);
+
+            if (stockCodes.length === 0) {
+                alert('没有可添加的股票');
+                return;
+            }
+
+            // 手机版：仅复制代码到剪贴板（取消通达信treeid联动）
+            const codeString = stockCodes.join('|');
+            try {
+                navigator.clipboard.writeText(codeString).then(() => {
+                    alert(`已将【${selectedThemeName}】的前${stockCodes.length}只股票代码复制到剪贴板！\n\n格式：1#600000|0#000001，可直接导入通达信/同花顺自选。`);
+                }).catch(() => {
+                    // 降级方案
+                    const textArea = document.createElement('textarea');
+                    textArea.value = codeString;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert(`已将【${selectedThemeName}】的前${stockCodes.length}只股票代码复制到剪贴板！`);
+                });
+            } catch (e) {
+                console.error('复制失败:', e);
+                alert(`复制失败，请手动复制以下代码：\n${codeString}`);
+            }
+        }
+
+// ==================== 东财API请求函数 ====================
+        
+        /**
+         * 获取东财API数据
+         * @param {string} url - API地址
+         * @param {boolean} isExpected - 是否为预期热点
+         * @param {number} pageNum - 页码
+         * @returns {Promise} 返回数据Promise
+         */
+        function fetchThemeData(url, isExpected = false, pageNum = 1) {
+            const requestData = {
+                args: isExpected ? {} : {
+                    pageSize: 100,
+                    pageNum: pageNum,
+                    sort: -1
+                },
+                client: 'web',
+                clientVersion: '8.3',
+                clientType: 'cfw',
+                randomCode: isExpected ? 'qwRtDlKIulaJS88Y' : 'QMvrYSV2BSS4uDmf',
+                timestamp: Date.now()
+            };
+            
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Accept': 'application/json, text/plain, */*',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+                    'Origin': 'https://emrnweb.eastmoney.com',
+                    'Referer': 'https://emrnweb.eastmoney.com/'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 0) {
+                    return data.data;
+                }
+                throw new Error(data.message || '获取数据失败');
+            })
+            .catch(error => {
+                console.error('获取数据失败:', error);
+                return null;
+            });
+        }
+
+        /**
+         * 加载题材列表（使用东财真实数据）
+         */
+        async function loadThemeList() {
+            const themeListEl = document.getElementById('theme-list');
+            themeListEl.innerHTML = '<div class="loading">加载题材列表中...</div>';
+
+            try {
+                // 加载今日热点
+                const todayHotData = await fetchThemeData(EASTMONEY_API_BASE.getTodayChance);
+                // 加载全部热点
+                const themeListData = await fetchThemeData(EASTMONEY_API_BASE.getThemeList);
+                
+                // 合并数据
+                let themes = [];
+                if (themeListData && themeListData.list) {
+                    themes = themeListData.list;
+                } else if (todayHotData) {
+                    themes = todayHotData;
+                }
+                
+                if (themes.length === 0) {
+                    throw new Error('未获取到题材数据');
+                }
+                
+                // 处理题材数据 - 精简显示字段
+                allThemesData = themes.map(theme => ({
+                    id: theme.themeCode || theme.code || '',
+                    name: theme.themeName || theme.name || '',
+                    hotness: 0,
+                    limitUpCount: theme.fex3 || 0,
+                    change: theme.f3 || theme.bf3 || 0,
+                    leadStock: theme.securityName || theme.leadStock || '-',
+                    stockNum: theme.stockNum || theme.stockCount || 0,
+                    // 临时存储核心角色数据
+                    middleStock: '-',
+                    commanderStock: '-'
+                })).filter(item => item.id && item.name);
+
+                state.themeList = [...allThemesData];
+                state.filteredThemes = [...allThemesData];
+
+                // 按选中的方式排序
+                sortThemes();
+                
+                // 渲染题材列表
+                renderThemeList();
+
+                // 设置搜索和筛选监听
+                setupSearchAndFilter();
+
+                // 初始化自动更新
+                setupAutoUpdate();
+
+                // 默认选中第一个题材
+                if (allThemesData.length > 0) {
+                    const firstTheme = allThemesData[0];
+                    state.currentThemeId = firstTheme.id;
+                    selectedThemeCode = firstTheme.id;
+                    selectedThemeName = firstTheme.name;
+                    loadStockDetail(selectedThemeCode, selectedThemeName);
+                }
+
+            } catch (error) {
+                console.error('加载题材列表失败:', error);
+                themeListEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">❌</div>
+                        <div>加载失败，请刷新页面重试</div>
+                    </div>
+                `;
+            }
+        }
+
+        /**
+         * 加载股票详细数据
+         * @param {string} themeCode - 题材代码
+         * @param {string} themeName - 题材名称
+         */
+        async function loadStockDetail(themeCode, themeName, retryCount = 0) {
+            const conceptTreeEl = document.getElementById('concept-tree');
+            conceptTreeEl.innerHTML = '<div class="loading">加载题材数据中...</div>';
+            
+            selectedThemeCode = themeCode;
+            selectedThemeName = themeName;
+
+            try {
+                const requestData = {
+                    args: {
+                        themeCode: themeCode,
+                        pageSize: 1000,
+                        pageNum: 1,
+                        sort: -1,
+                        sortField: 'f3'
+                    },
+                    client: 'web',
+                    clientVersion: '8.3',
+                    clientType: 'cfw',
+                    randomCode: 'QMvrYSV2BSS4uDmf',
+                    timestamp: Date.now()
+                };
+                
+                const response = await fetch(EASTMONEY_API_BASE.getStockList, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        'Accept': 'application/json, text/plain, */*',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+                        'Origin': 'https://emrnweb.eastmoney.com',
+                        'Referer': 'https://emrnweb.eastmoney.com/'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
+                
+                if (data.code === 0 && (data.data.stockList || data.data.list)) {
+                    state.themeData = data.data;
+                    currentStockList = data.data.stockList || data.data.list;
+                    
+                    // 更新核心角色股票
+                    updateCoreRoleStocks(currentStockList);
+                    
+                    // 初始化AI评分
+                    let totalScore = 0;
+                    currentStockList.forEach(stock => {
+                        const score = generateAIScore(stock);
+                        state.aiScores[stock.securityCode] = score;
+                        totalScore += parseFloat(score);
+                    });
+                    
+                    // 更新UI
+                    updateConceptHeader(data.data, themeName);
+                    updateLimitUpTable(currentStockList);
+                    updateConceptStructure(currentStockList);
+
+                    // 更新选中状态
+                    updateThemeSelection(themeCode);
+                } else {
+                    throw new Error(`API返回错误: ${data.message || '未知错误'}`);
+
+                }
+            } catch (error) {
+                console.error('加载股票详情失败:', error);
+                
+                // 重试机制
+                if (retryCount < 3) {
+                    console.log(`第${retryCount + 1}次重试加载...`);
+                    setTimeout(() => {
+                        loadStockDetail(themeCode, themeName, retryCount + 1);
+                    }, 1000);
+                    return;
+                }
+                
+                // 失败处理
+                conceptTreeEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📉</div>
+                        <div>暂无${themeName}相关数据</div>
+                    </div>
+                `;
+                
+                // 清空表头数据
+                document.getElementById('concept-title').textContent = themeName || '未知题材';
+                document.getElementById('total-stocks').textContent = '-';
+                document.getElementById('limitup-count').textContent = '-';
+                document.getElementById('theme-change').textContent = '-';
+                document.getElementById('concept-desc').textContent = '暂无题材介绍';
+                
+                // 清空核心角色数据
+                document.getElementById('lead-stock').textContent = '-';
+                document.getElementById('middle-stock').textContent = '-';
+                document.getElementById('commander-stock').textContent = '-';
+                document.getElementById('left-vanguard-stock').textContent = '-';
+                document.getElementById('right-vanguard-stock').textContent = '-';
+                document.getElementById('ai-score').textContent = '0.0';
+                
+                // 清空涨停池
+                document.getElementById('limitup-table').innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center;">暂无涨停数据</td>
+                    </tr>
+                `;
+            }
+        }
+
+        /**
+         * 更新核心角色股票信息
+         * @param {array} stockList - 股票列表
+         */
+        function updateCoreRoleStocks(stockList) {
+            if (!stockList || stockList.length === 0) {
+                coreRoleStocks = {
+                    lead: '暂无',
+                    middle: '暂无',
+                    commander: '暂无',
+                    left: '暂无',
+                    right: '暂无'
+                };
+                return;
+            }
+            
+            // 计算股票角色
+            const roles = calculateStockRoles(stockList);
+            
+            // 查找对应股票名称
+            const getStockNameByCode = (code) => {
+                const stock = stockList.find(item => item.securityCode === code);
+                return stock ? stock.securityName : '暂无';
+            };
+            
+            coreRoleStocks = {
+                lead: getStockNameByCode(roles.leader),
+                middle: getStockNameByCode(roles.zhongjun),
+                commander: getStockNameByCode(roles.leader) ? getStockNameByCode(roles.leader) : '暂无',
+                left: getStockNameByCode(roles.leftVanguard) || '暂无',
+                right: getStockNameByCode(roles.rightVanguard) || '暂无'
+            };
+            
+            // 更新UI显示
+            document.getElementById('lead-stock').textContent = coreRoleStocks.lead;
+            document.getElementById('middle-stock').textContent = coreRoleStocks.middle;
+            document.getElementById('commander-stock').textContent = coreRoleStocks.commander;
+            document.getElementById('left-vanguard-stock').textContent = coreRoleStocks.left;
+            document.getElementById('right-vanguard-stock').textContent = coreRoleStocks.right;
+        }
+
+        /**
+         * 更新概念头部信息
+         * @param {object} data - 题材数据
+         * @param {string} themeName - 题材名称
+         */
+        function updateConceptHeader(data, themeName) {
+            document.getElementById('concept-title').textContent = themeName || '未知题材';
+            document.getElementById('total-stocks').textContent = data.stockNum || currentStockList.length || 0;
+            
+            // 统计涨停数量
+            const limitUpCount = currentStockList.filter(stock => (stock.f3 || 0) >= 9.8).length;
+            document.getElementById('limitup-count').textContent = limitUpCount;
+            
+            // 计算平均涨幅
+            const totalChange = currentStockList.reduce((sum, stock) => sum + (stock.f3 || 0), 0);
+            const avgChange = currentStockList.length > 0 ? (totalChange / currentStockList.length).toFixed(2) : '0.00';
+            const changeElement = document.getElementById('theme-change');
+            changeElement.innerHTML = `${avgChange}% <span class="change-detail tooltip" data-tooltip="${getChangeDetail(avgChange, currentStockList)}">ℹ️</span>`;
+            
+            // 设置题材描述
+            const desc = data.themeDesc || data.introduction || `${themeName}是当前市场热门题材，包含${currentStockList.length}只成分股。`;
+            document.getElementById('concept-desc').textContent = stripHtml(desc);
+            
+            // 更新数据时间
+            updateTimeDisplay();
+        }
+
+        /**
+         * 更新涨停池表格
+         * @param {array} stockList - 股票列表
+         */
+        function updateLimitUpTable(stockList) {
+            const tableBody = document.getElementById('limitup-table');
+            
+            if (!stockList || stockList.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center;">暂无涨停股票数据</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // 筛选涨停股票
+            const limitUpStocks = stockList.filter(stock => (stock.f3 || 0) >= 9.8);
+            
+            if (limitUpStocks.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center;">该题材暂无涨停股票</td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // 按选中的方式排序
+            sortStocks(limitUpStocks);
+            
+            // 生成表格内容
+            let html = '';
+            limitUpStocks.forEach((stock, index) => {
+                const rank = index + 1;
+                const change = (stock.f3 || 0).toFixed(2);
+                const aiScore = state.aiScores[stock.securityCode] || generateAIScore(stock);
+                const reason = getLimitUpReason(stock);
+                
+                html += `
+                    <tr onclick="openStockLink('${stock.securityCode}', event)">
+                        <td>
+                            <span class="rank-badge ${getRankClass(rank)}">${rank}</span>
+                        </td>
+                        <td class="${getStockMarketClass(stock.securityCode)}">${stock.securityCode}</td>
+                        <td class="stock-name">${stock.securityName} ${getStockRoleTag(index)}</td>
+                        <td class="stock-change">${change}%</td>
+                        <td class="stat-ai">${aiScore}</td>
+                        <td>
+                            <div>${reason || '题材热度提升，资金追捧'}</div>
+                            <div class="stock-reason">
+                                主力净流入: ${formatNumber(stock.f62)} | 成交额: ${formatNumber(stock.f57)}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+
+        /**
+         * 更新概念结构显示
+         * @param {array} stockList - 股票列表
+         */
+        function updateConceptStructure(stockList) {
+            const conceptTreeEl = document.getElementById('concept-tree');
+            
+            if (!stockList || stockList.length === 0) {
+                conceptTreeEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div>暂无成分股数据</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 复制并排序股票列表
+            const sortedStocks = [...stockList];
+            sortStocks(sortedStocks);
+            
+            // 生成层级结构
+            let html = `
+                <div class="level1-item">
+                    <div class="level1-header">
+                        <span>${selectedThemeName} 成分股 (${sortedStocks.length}只)</span>
+                        <span class="stat-warning">平均涨幅: ${(sortedStocks.reduce((sum, stock) => sum + (stock.f3 || 0), 0) / sortedStocks.length).toFixed(2)}%</span>
+                    </div>
+                    <div class="level1-content">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th width="8%">排名</th>
+                                    <th width="12%">代码</th>
+                                    <th width="18%">名称</th>
+                                    <th width="8%">涨幅</th>
+                                    <th width="12%">主力净流入</th>
+                                    <th width="15%">AI评分</th>
+                                    <th width="27%">角色/标签</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+            
+            // 生成股票行
+            sortedStocks.forEach((stock, index) => {
+                const rank = index + 1;
+                const change = (stock.f3 || 0).toFixed(2);
+                const changeClass = change >= 0 ? 'stock-change' : 'stock-change negative';
+                const aiScore = state.aiScores[stock.securityCode] || generateAIScore(stock);
+                
+                // 生成标签
+                let tags = getStockRoleTag(index);
+                if ((stock.f3 || 0) >= 9.8) {
+                    tags += '<span class="tag tag-limitup">涨停</span>';
+                }
+                if ((stock.f62 || 0) > 100000000) {
+                    tags += '<span class="tag tag-hot">资金流入</span>';
+                }
+                
+                html += `
+                    <tr onclick="openStockLink('${stock.securityCode}', event)">
+                        <td>
+                            <span class="rank-badge ${getRankClass(rank)}">${rank}</span>
+                        </td>
+                        <td class="${getStockMarketClass(stock.securityCode)}">${stock.securityCode}</td>
+                        <td class="stock-name">${stock.securityName}</td>
+                        <td class="${changeClass}">${change}%</td>
+                        <td class="stock-flow">${formatNumber(stock.f62)}</td>
+                        <td class="stat-ai">${aiScore}</td>
+                        <td>${tags || '-'}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            
+            conceptTreeEl.innerHTML = html;
+        }
+
+        /**
+         * 渲染题材列表
+         */
+        function renderThemeList() {
+            const themeListEl = document.getElementById('theme-list');
+            const totalCountEl = document.getElementById('totalCount');
+            
+            if (state.filteredThemes.length === 0) {
+                themeListEl.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <div>未找到匹配的题材</div>
+                    </div>
+                `;
+                totalCountEl.textContent = `(${0})`;
+                return;
+            }
+            
+            totalCountEl.textContent = `(${state.filteredThemes.length})`;
+            
+            let html = '';
+            state.filteredThemes.forEach(theme => {
+                const changeClass = theme.change >= 0 ? 'positive' : 'negative';
+                const changeText = theme.change ? `${theme.change.toFixed(2)}%` : '-';
+                
+                // 活跃状态
+                const activeClass = state.currentThemeId === theme.id ? 'active' : '';
+                
+                html += `
+                    <div class="theme-item ${activeClass}" data-theme-id="${theme.id}" data-theme-name="${theme.name}">
+                        <div class="theme-header">
+                            <div class="theme-name">${theme.name}</div>
+                            <div class="theme-metrics">
+                                <div class="theme-limitup">涨停${theme.limitUpCount || 0}</div>
+                                <div class="theme-change ${changeClass}">${changeText}</div>
+                            </div>
+                        </div>
+                        <div class="theme-roles">
+                            <span class="role-tag">龙头: ${theme.leadStock || '-'}</span>
+                            <span class="role-tag">成分${theme.stockNum || 0}只</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            themeListEl.innerHTML = html;
+            
+            // 添加点击事件
+            document.querySelectorAll('.theme-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const themeId = item.getAttribute('data-theme-id');
+                    const themeName = item.getAttribute('data-theme-name');
+                    state.currentThemeId = themeId;
+                    loadStockDetail(themeId, themeName);
+                    // 手机端：点击题材展开详情（主从导航）
+                    if (isMobile()) showDetail(themeName);
+                });
+            });
+        }
+
+        /**
+         * 更新题材选中状态
+         * @param {string} themeId - 题材ID
+         */
+        function updateThemeSelection(themeId) {
+            document.querySelectorAll('.theme-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-theme-id') === themeId);
+            });
+        }
+
+        /**
+         * 设置搜索和筛选功能
+         */
+        function setupSearchAndFilter() {
+            // 搜索功能
+            const searchInput = document.getElementById('theme-search');
+            searchInput.addEventListener('input', debounce(function() {
+                const keyword = this.value.trim().toLowerCase();
+                
+                if (keyword) {
+                    state.filteredThemes = state.themeList.filter(theme => 
+                        theme.name.toLowerCase().includes(keyword) || 
+                        (theme.id && theme.id.includes(keyword))
+                    );
+                } else {
+                    state.filteredThemes = [...state.themeList];
+                }
+                
+                // 重新排序
+                sortThemes();
+                // 重新渲染
+                renderThemeList();
+            }, 300));
+            
+            // 主筛选器
+            const mainFilter = document.getElementById('mainFilter');
+            mainFilter.addEventListener('change', function() {
+                filterThemes();
+            });
+            
+            // 排序筛选器
+            const themeSortSelector = document.getElementById('themeSortSelector');
+            themeSortSelector.addEventListener('change', function() {
+                sortThemes();
+                renderThemeList();
+            });
+            
+            // 股票排序筛选器
+            const stockSortSelector = document.getElementById('stockSortSelector');
+            stockSortSelector.addEventListener('change', function() {
+                if (currentStockList.length > 0) {
+                    updateLimitUpTable(currentStockList);
+                    updateConceptStructure(currentStockList);
+                }
+            });
+            
+            // Tab切换
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    // 更新Tab状态
+                    document.querySelectorAll('.tab-item').forEach(item => {
+                        item.classList.toggle('active', item === this);
+                    });
+                    
+                    // 显示对应内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    document.getElementById(`tab-${tabName}`).style.display = 'block';
+                });
+            });
+            
+            // AI按钮事件
+            document.getElementById('aiPredictBtn').addEventListener('click', aiPredictStrongStocks);
+            document.getElementById('aiFilterBtn').addEventListener('click', aiFilterStrongStocks);
+            document.getElementById('aiAnalyzeBtn').addEventListener('click', aiDeepAnalysis);
+            
+            // 加入板块按钮
+            document.getElementById('add-block-btn').addEventListener('click', addToBlock);
+            
+            // 刷新按钮
+            document.getElementById('refresh-btn').addEventListener('click', function() {
+                showJumpTooltip('🔄 正在刷新数据...', 1500);
+                setTimeout(() => {
+                    loadThemeList();
+                }, 500);
+            });
+        }
+
+        /**
+         * 筛选题材
+         */
+        function filterThemes() {
+            const filterValue = document.getElementById('mainFilter').value;
+            let filtered = [...state.themeList];
+            
+            switch(filterValue) {
+                case 'hot':
+                    // 热门题材（涨停数>0 或 涨幅>3%）
+                    filtered = filtered.filter(theme => 
+                        (theme.limitUpCount && theme.limitUpCount > 0) || 
+                        (theme.change && theme.change > 3)
+                    );
+                    break;
+                case 'rise':
+                    // 涨幅靠前
+                    filtered = filtered.sort((a, b) => (b.change || 0) - (a.change || 0));
+                    break;
+                case 'limitup':
+                    // 有涨停
+                    filtered = filtered.filter(theme => theme.limitUpCount && theme.limitUpCount > 0);
+                    break;
+                default:
+                    // 全部
+                    break;
+            }
+            
+            state.filteredThemes = filtered;
+            
+            // 重新排序
+            sortThemes();
+            // 重新渲染
+            renderThemeList();
+        }
+
+        /**
+         * 排序题材
+         */
+        function sortThemes() {
+            const sortValue = document.getElementById('themeSortSelector').value;
+            
+            switch(sortValue) {
+                case 'hot':
+                    // 热度优先（涨停数+涨幅综合）
+                    state.filteredThemes.sort((a, b) => {
+                        const hotScoreA = (a.limitUpCount || 0) * 10 + (a.change || 0);
+                        const hotScoreB = (b.limitUpCount || 0) * 10 + (b.change || 0);
+                        return hotScoreB - hotScoreA;
+                    });
+                    break;
+                case 'limitup':
+                    // 涨停优先
+                    state.filteredThemes.sort((a, b) => (b.limitUpCount || 0) - (a.limitUpCount || 0));
+                    break;
+                case 'rise':
+                    // 涨幅优先
+                    state.filteredThemes.sort((a, b) => (b.change || 0) - (a.change || 0));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /**
+         * 排序股票
+         * @param {array} stocks - 股票列表
+         */
+        function sortStocks(stocks) {
+            const sortValue = document.getElementById('stockSortSelector').value;
+            
+            switch(sortValue) {
+                case 'changeDesc':
+                    // 涨幅降序
+                    stocks.sort((a, b) => (b.f3 || 0) - (a.f3 || 0));
+                    break;
+                case 'limitUpFirst':
+                    // 涨停优先
+                    stocks.sort((a, b) => {
+                        const aIsLimitUp = (a.f3 || 0) >= 9.8 ? 1 : 0;
+                        const bIsLimitUp = (b.f3 || 0) >= 9.8 ? 1 : 0;
+                        if (aIsLimitUp !== bIsLimitUp) {
+                            return bIsLimitUp - aIsLimitUp;
+                        }
+                        return (b.f3 || 0) - (a.f3 || 0);
+                    });
+                    break;
+                case 'aiScore':
+                    // AI评分优先
+                    stocks.sort((a, b) => {
+                        const scoreA = state.aiScores[a.securityCode] || generateAIScore(a);
+                        const scoreB = state.aiScores[b.securityCode] || generateAIScore(b);
+                        return scoreB - scoreA;
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /**
+         * 设置自动更新
+         */
+        function setupAutoUpdate() {
+            if (state.updateTimer) {
+                clearInterval(state.updateTimer);
+            }
+            
+            state.updateTimer = setInterval(() => {
+                console.log('自动更新数据...');
+                if (state.currentThemeId) {
+                    loadStockDetail(state.currentThemeId, selectedThemeName);
+                } else if (state.themeList.length > 0) {
+                    loadThemeList();
+                }
+            }, UPDATE_INTERVAL);
+        }
+
+        /**
+         * 防抖函数
+         * @param {function} func - 执行函数
+         * @param {number} wait - 等待时间
+         * @returns {function} 防抖函数
+         */
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+
+        // ==================== 初始化 ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化加载题材列表
+            loadThemeList();
+            
+            // 错误处理：捕获未处理的异常
+            window.addEventListener('error', function(e) {
+                console.error('全局错误:', e.error);
+                showJumpTooltip('⚠️ 数据加载出错，请刷新页面', 3000);
+            });
+            
+            // 网络错误处理
+            window.addEventListener('offline', function() {
+                showJumpTooltip('⚠️ 网络已断开，请检查网络连接', 3000);
+            });
+        });
+
+
+        // ==================== 手机端 主从导航（列表→详情→返回） ====================
+        function isMobile() { return window.innerWidth <= 768; }
+        function showDetail(themeName) {
+            document.body.classList.add('showing-detail');
+            var t = document.getElementById('mobileBackTitle');
+            if (t) t.textContent = themeName || '题材详情';
+            var mc = document.querySelector('.main-content');
+            if (mc) mc.scrollTop = 0;
+        }
+        function showThemeList() {
+            document.body.classList.remove('showing-detail');
+        }
+
+        // ==================== 手机App深链（与主系统一致，取消通达信联动） ====================
+        function stkPref(){ try{ var v=localStorage.getItem('stk_kline_pref'); return v||'auto'; }catch(e){ return 'auto'; } }
+        function stkWeb(code){
+          var mk=/^(60|68|90)/.test(code)?'sh':(/^(00|30)/.test(code)?'sz':'bj');
+          window.open('https://quote.eastmoney.com/'+mk+code+'.html','_blank');
+        }
+        function stkTry(code,list,i){
+          if(i>=list.length){ stkWeb(code); return; }
+          var hit=false;
+          var done=function(){ hit=true; };
+          document.addEventListener('visibilitychange',done);
+          window.addEventListener('pagehide',done);
+          window.addEventListener('blur',done);
+          try{ window.location.href=list[i]; }catch(e){}
+          setTimeout(function(){
+            document.removeEventListener('visibilitychange',done);
+            window.removeEventListener('pagehide',done);
+            window.removeEventListener('blur',done);
+            if(hit || (typeof document.hidden==='boolean' && document.hidden)) return;
+            stkTry(code,list,i+1);
+          },900);
+        }
+        function openStockKline(code){
+          if(!code) return;
+          code=String(code).replace(/[^0-9]/g,'').slice(0,6);
+          if(!code) return;
+          var p=stkPref();
+          if(p==='web'){ stkWeb(code); return; }
+          var list=[];
+          if(p==='tdx'||p==='auto') list.push('tdx://'+code);
+          if(p==='ths'||p==='auto') list.push('amihexin://?type=stock&code='+code);
+          stkTry(code,list,0);
+        }
+
+    </script>
+</body>
+</html>

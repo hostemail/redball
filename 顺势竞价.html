@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><script>(function(){try{var t="__ls_pf__";localStorage.setItem(t,t);localStorage.removeItem(t);}catch(e){var s={};window.localStorage={getItem:function(k){return s.hasOwnProperty(k)?s[k]:null;},setItem:function(k,v){s[k]=String(v);},removeItem:function(k){delete s[k];},clear:function(){s={};},key:function(i){return Object.keys(s)[i]||null;}};}})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>顺势而为竞价终极版 · 四维积分制 | 红线淘汰机制</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #0f1219 0%, #0a0c12 100%);
+            color: #eef2ff; padding: 2px; line-height: 1.5; min-height: 100vh;
+        }
+        .container { max-width: 100%; margin: 0 auto; }
+        .hero-section { text-align: center; margin: 10px 0 5px; }
+        .dominant-title {
+            font-size: 48px; font-weight: 800;
+            background: linear-gradient(135deg, #ff4d4d, #cc0000);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+            display: inline-block; letter-spacing: 3px;
+        }
+        .title-sub {
+            font-size: 14px; color: #ffa2a2; background: rgba(0,0,0,0.4);
+            display: inline-block; padding: 2px 12px; border-radius: 20px;
+            backdrop-filter: blur(4px); margin-top: 4px; letter-spacing: 1px;
+        }
+        .alert-rule {
+            background: linear-gradient(90deg, rgba(255,60,60,0.1), rgba(200,40,40,0.05));
+            border-left: 4px solid #ff4d4d; padding: 8px 12px; border-radius: 6px;
+            margin: 8px 0; display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; backdrop-filter: blur(4px); gap: 10px;
+        }
+        .rule-text { font-size: 13px; font-weight: 500; color: #ffbcbc; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .rule-text strong { color: #ff7b7b; }
+        .right-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tdx-export-btn {
+            background: rgba(255,70,70,0.2); border: 1px solid #ff5c5c; padding: 6px 14px;
+            border-radius: 4px; color: #fff0f0; font-weight: bold; font-size: 12px;
+            cursor: pointer; transition: all 0.2s; backdrop-filter: blur(4px);
+            display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+        }
+        .tdx-export-btn:hover { background: #ff3a3a; color: white; border-color: white; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(255,60,60,0.3); }
+        .reset-lock-btn { background: rgba(100,130,255,0.2); border: 1px solid #5a7aff; }
+        .reset-lock-btn:hover { background: #3a6eff; }
+        .real-time-btn { background: rgba(0,200,100,0.2); border: 1px solid #00c864; }
+        .real-time-btn:hover { background: #00c864; }
+        .reset-filter-btn { background: rgba(80,140,255,0.2); border: 1px solid #5a8aff; color: #d0e0ff; }
+        .reset-filter-btn:hover { background: #4a7aff; color: white; border-color: white; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(70,120,255,0.3); }
+        .lock-filter-btn { background: rgba(160,160,160,0.2); border: 1px solid #999; color: #ddd; transition: all 0.2s; }
+        .lock-filter-btn:hover { background: rgba(180,180,180,0.35); color: white; border-color: #bbb; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(160,160,160,0.3); }
+        .lock-filter-btn.locked { background: rgba(255,140,40,0.25); border: 1px solid #ff8c28; color: #ffe0c0; animation: lockPulse 2s ease-in-out infinite; }
+        .lock-filter-btn.locked:hover { background: #ff7b1a; color: white; border-color: #fff; box-shadow: 0 5px 14px rgba(255,120,30,0.5); }
+        @keyframes lockPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,140,40,0.5); } 50% { box-shadow: 0 0 0 8px rgba(255,140,40,0); } }
+        .count-select, .export-select { background: rgba(0,0,0,0.5); border: 1px solid #ff5c5c; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 12px; outline: none; cursor: pointer; }
+        .live-time { background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border-radius: 6px; padding: 6px 12px; text-align: center; border: 1px solid rgba(255,100,100,0.3); font-family: monospace; white-space: nowrap; }
+        .live-time .time-digital { font-size: 16px; font-weight: 700; color: #ffbb99; letter-spacing: 1px; }
+
+        /* 市场范围面板 */
+        .market-panel {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            border-radius: 14px;
+            padding: 8px 16px;
+            margin: 8px 0;
+            border: 1px solid rgba(100, 150, 255, 0.5);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .market-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffcf9a;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .market-check-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: rgba(20, 28, 45, 0.6);
+            padding: 6px 18px;
+            border-radius: 40px;
+            align-items: center;
+        }
+        .market-check-group label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #e0eaff;
+            white-space: nowrap;
+        }
+        .market-check-group input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #ff7a3c;
+        }
+        .market-actions button {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid #ff8866;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #ffcfaa;
+            transition: 0.2s;
+        }
+        .market-actions button:hover {
+            background: #ff6a3a;
+            color: white;
+            border-color: white;
+        }
+        .market-tip {
+            font-size: 11px;
+            color: #aaaaff;
+        }
+
+        .medal-section {
+            background: rgba(18,22,35,0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 18px 12px;
+            border: 1px solid rgba(255,215,0,0.4);
+            margin: 12px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: space-evenly;
+        }
+        .medal-card {
+            flex: 1 1 170px;
+            min-width: 160px;
+            text-align: center;
+            padding: 14px 8px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,215,0,0.35);
+            backdrop-filter: blur(2px);
+            transition: transform 0.15s;
+        }
+        .medal-card:hover { transform: translateY(-3px); border-color: #ffaa44; }
+        .medal-rank {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffd966;
+            background: rgba(0,0,0,0.4);
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 30px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .medal-name-big {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 6px 0 2px;
+            white-space: nowrap;
+            overflow-x: auto;
+            text-overflow: ellipsis;
+        }
+        .medal-code {
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffd966;
+            cursor: pointer;
+            font-family: 'Consolas', monospace;
+            margin: 4px 0;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 24px;
+        }
+        .medal-code:hover { background: #ffaa33; color: #1f1f2f; text-shadow: none; }
+        .medal-prob-big {
+            font-size: 42px;
+            font-weight: 900;
+            color: #ff8c5a;
+            line-height: 1;
+            margin: 6px 0;
+        }
+        .medal-detail {
+            font-size: 12px;
+            color: #ddd;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 4px 8px;
+            margin-top: 4px;
+        }
+        .medal-detail span { white-space: nowrap; }
+        .medal-real-chg {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ff5e5e;
+            margin-top: 6px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 40px;
+            padding: 2px 6px;
+            display: inline-block;
+        }
+        .medal-real-chg.green-real { color: #00e676 !important; }
+
+        .filter-custom {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,100,100,0.4); border-radius: 8px;
+            padding: 12px 16px; margin: 8px 0; display: flex; flex-wrap: wrap; align-items: center;
+            gap: 16px; backdrop-filter: blur(4px); transition: border-color 0.3s;
+        }
+        .filter-custom.filter-locked { border-color: rgba(255,140,40,0.7); background: rgba(15,10,5,0.4); }
+        .filter-group { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; background: rgba(0,0,0,0.25); padding: 6px 12px; border-radius: 24px; }
+        .filter-item { display: flex; align-items: center; gap: 6px; background: rgba(20,25,45,0.7); padding: 4px 10px; border-radius: 20px; }
+        .filter-item label { font-size: 12px; color: #ffbcbc; white-space: nowrap; }
+        .filter-item input[type="checkbox"] { accent-color: #ff5c5c; margin-right: 4px; cursor: pointer; }
+        .filter-item input[type="number"] { background: rgba(0,0,0,0.6); border: 1px solid #ff7b5c; color: #fff; width: 65px; padding: 4px 6px; border-radius: 16px; text-align: center; font-size: 11px; }
+        .range-text { font-size: 11px; color: #ffccaa; margin: 0 2px; }
+        .filter-actions { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+        .lock-indicator { font-size: 10px; background: rgba(255,140,30,0.4); padding: 2px 10px; border-radius: 20px; color: #ffdd99; font-weight: bold; display: none; }
+        .filter-custom.filter-locked .lock-indicator { display: inline-block; }
+        .filter-custom.filter-locked label, 
+        .filter-custom.filter-locked .filter-item input,
+        .filter-custom.filter-locked input[type="number"] { cursor: not-allowed; opacity: 0.7; pointer-events: none; }
+
+        .stock-pool-panel { margin: 15px 0; background: rgba(10,15,28,0.85); backdrop-filter: blur(8px); border-radius: 10px; border: 1px solid rgba(255,140,140,0.3); padding: 15px 18px; }
+        .pool-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; border-bottom: 1px dashed rgba(255,120,120,0.3); padding-bottom: 10px; }
+        .pool-title { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #ffb347, #ff7e5e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .pool-buttons { display: flex; gap: 8px; }
+        .pool-btn { background: rgba(50,65,100,0.6); border: 1px solid rgba(255,160,120,0.5); padding: 5px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; transition: 0.2s; color: #ffe0e0; }
+        .pool-btn:hover { background: #ff6a3a; border-color: #fff0c0; color: white; }
+        .pool-list { max-height: 240px; overflow-y: auto; margin-top: 10px; }
+        .pool-item { display: flex; align-items: center; justify-content: space-between; background: rgba(20,28,40,0.7); margin: 6px 0; padding: 8px 12px; border-radius: 16px; border-left: 3px solid #ff8866; }
+        .pool-stock-code { font-size: 11px; color: #bbaaee; font-family: monospace; cursor: pointer; }
+        .del-single { background: rgba(220,50,50,0.6); border: none; border-radius: 20px; padding: 4px 10px; color: white; cursor: pointer; font-size: 11px; }
+        .empty-pool { text-align: center; padding: 20px; color: #ccaacc; }
+
+        .stock-table-container { background: rgba(18,22,35,0.85); backdrop-filter: blur(4px); border-radius: 8px; padding: 10px; margin: 8px 0; overflow-x: auto; }
+        .stock-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 1200px; }
+        .stock-table th { padding: 10px 4px; background: rgba(255,60,60,0.15); border-bottom: 2px solid #ff4d4d; color: #ffbcbc; font-size: 12px; }
+        .stock-table td { padding: 8px 4px; border-bottom: 1px solid rgba(255,80,80,0.1); font-size: 12px; }
+        .code-click { cursor: pointer; color: #ffd700 !important; font-weight: bold; }
+        .up { color: #ff8a6f; } .down { color: #00c864; } .real-green { color: #00c864 !important; }
+        .toast-msg { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ff3a3a; color: white; padding: 8px 22px; border-radius: 40px; font-size: 13px; z-index: 1000; animation: fadeInOut 2.2s forwards; }
+        @keyframes fadeInOut { 0%{opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{opacity:0; visibility:hidden;} }
+        .footnote { text-align: center; font-size: 12px; color: #7788aa; margin-top: 20px; padding: 20px; }
+        .spinner { width: 32px; height: 32px; border: 3px solid rgba(255,80,80,0.2); border-top: 3px solid #ff5e5e; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 8px; gap: 12px; }
+        .stats-badge { background: rgba(0,0,0,0.5); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #ffcf9a; }
+    .web-kline-btn{cursor:pointer;margin-left:4px;font-size:12px;opacity:0.75;}.web-kline-btn:hover{opacity:1;}
+
+/* ===== 手机端适配（自动注入 · 不影响桌面端） ===== */
+@media (max-width: 768px){
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  body{padding:0!important;overflow-x:hidden!important;}
+  .container{max-width:100%!important;padding:0 6px!important;}
+  button{cursor:pointer!important;touch-action:manipulation!important;}
+  select,input,textarea{font-size:14px!important;}
+  div:has(> table),.modal-body:has(table){overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;}
+  .tdx-export-btn,.pool-btn{padding:10px 12px!important;min-height:40px!important;font-size:13px!important;border-radius:8px!important;}
+}
+
+@media (max-width: 768px){
+  .hero-section{margin:4px 0 2px!important;}
+  .dominant-title{font-size:24px!important;letter-spacing:1px!important;}
+  .title-sub{font-size:11px!important;padding:2px 8px!important;margin-top:2px!important;}
+  .alert-rule{padding:8px!important;gap:8px!important;border-radius:8px!important;}
+  .rule-text{font-size:12px!important;}
+  .rule-text strong{display:block!important;width:100%!important;}
+  .btn-group{flex-wrap:wrap!important;gap:6px!important;}
+  .live-time{padding:8px 10px!important;}
+  .live-time .time-digital{font-size:15px!important;}
+  .mode-panel{padding:10px!important;border-radius:10px!important;}
+  .mode-title{font-size:14px!important;}
+  .mode-desc{font-size:11px!important;}
+  .filter-custom{padding:10px!important;gap:8px!important;border-radius:10px!important;}
+  .filter-group{width:100%!important;gap:8px!important;padding:8px!important;border-radius:12px!important;}
+  .filter-item{flex-wrap:wrap!important;padding:5px 8px!important;}
+  .filter-item label{font-size:12px!important;}
+  .filter-item input[type="number"]{width:52px!important;font-size:13px!important;padding:6px 4px!important;border-radius:12px!important;}
+  .filter-actions{width:100%!important;margin-left:0!important;justify-content:flex-start!important;}
+  .medal-section{gap:10px!important;padding:12px 8px!important;border-radius:14px!important;}
+  .medal-card{flex:1 1 100%!important;min-width:0!important;padding:12px 8px!important;border-radius:14px!important;}
+  .medal-rank{font-size:15px!important;}
+  .medal-name-big{font-size:17px!important;}
+  .medal-code{font-size:14px!important;}
+  .medal-prob-big{font-size:30px!important;}
+  .stock-table-container{padding:6px!important;border-radius:8px!important;}
+  .stock-table{min-width:820px!important;}
+  .stock-table th,.stock-table td{font-size:12px!important;padding:8px 5px!important;}
+  .stock-pool-panel{padding:10px!important;border-radius:10px!important;}
+  .pool-header{gap:8px!important;}
+  .pool-title{font-size:16px!important;}
+  .pool-buttons{flex-wrap:wrap!important;gap:6px!important;}
+  .pool-item{padding:10px!important;border-radius:12px!important;}
+  .pool-list{max-height:300px!important;}
+  .modal-overlay{padding:12px!important;align-items:flex-end!important;}
+  .modal-card{width:100%!important;max-width:100%!important;border-radius:16px 16px 0 0!important;max-height:90dvh!important;}
+  .modal-body{padding:14px!important;}
+  .modal-footer{padding:12px!important;}
+  .modal-btn,.modal-footer button{padding:10px 20px!important;min-height:42px!important;font-size:14px!important;border-radius:24px!important;}
+  .signal-table{min-width:560px!important;}
+  .nav-tabs{flex-wrap:nowrap!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;scrollbar-width:none!important;}
+  .nav-tabs::-webkit-scrollbar{display:none!important;}
+  .nav-tab{flex:0 0 auto!important;padding:9px 14px!important;font-size:12px!important;}
+}
+
+@media (max-width: 768px){
+  .market-panel{padding:10px!important;gap:8px!important;border-radius:10px!important;align-items:flex-start!important;}
+  .market-title{font-size:13px!important;}
+  .market-check-group{width:100%!important;gap:10px!important;padding:8px 12px!important;border-radius:12px!important;}
+  .market-check-group label{font-size:13px!important;padding:6px 0!important;}
+  .market-check-group input{width:18px!important;height:18px!important;}
+  .market-actions{width:100%!important;}
+}
+</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container">
+    
+    <div class="alert-rule">
+        <div class="rule-text"><i class="fa fa-clock-o"></i> <strong>9:30前可重新选股 · 9:30后仅更新实时涨幅 | 红线触发最高分≤45</strong></div>
+        <div class="right-group">
+            <div class="btn-group"><button id="refreshLockedBtn" class="tdx-export-btn reset-lock-btn"><i class="fa fa-refresh"></i> 重新锁定(9:30前可用)</button><button id="refreshRealTimeBtn" class="tdx-export-btn real-time-btn"><i class="fa fa-refresh"></i> 刷新实时涨幅</button></div>
+            <div class="live-time"><div class="time-digital">--:--:--</div></div>
+        </div>
+    </div>
+    <div class="market-panel" id="marketScopePanel"><div class="market-title"><i class="fa fa-globe"></i> 选股范围<span class="market-tip">(多选自动刷新)</span></div><div class="market-check-group"><label><input type="checkbox" id="marketMainBoard" checked> 深沪A股主板</label><label><input type="checkbox" id="marketSciTech" checked> 科创板</label><label><input type="checkbox" id="marketGrowth" checked> 创业板</label></div><div class="market-actions"><button id="marketSelectAllBtn" class="tdx-export-btn" style="background:rgba(70,130,200,0.3);">✅ 全市场(全选)</button></div></div>
+
+    <div class="filter-custom" id="filterBox"><div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; width: 100%;"><div class="filter-group"><div class="filter-item"><label><input type="checkbox" id="filterST" checked> 剔除ST/停牌</label></div><div class="filter-item"><label><input type="checkbox" id="filterNewStock" checked> 上市<60天次新剔除</label></div></div><div class="filter-group"><div class="filter-item"><label><input type="checkbox" id="bidRangeEnable" checked> 竞价涨幅</label><input type="number" id="bidMin" value="0" step="0.5" min="0" max="20" style="width:60px"><span class="range-text">~</span><input type="number" id="bidMax" value="20" step="0.5" min="0" max="30" style="width:60px"><span>%</span></div><div class="filter-item"><label><input type="checkbox" id="mvRangeEnable" checked> 流通市值</label><input type="number" id="mvMin" value="5" step="1" min="1" max="1000"><span class="range-text">~</span><input type="number" id="mvMax" value="300" step="5" min="1" max="2000"><span>亿</span></div><div class="filter-item"><label><input type="checkbox" id="boardRangeEnable" checked> 连板数</label><input type="number" id="boardMin" value="0" step="1" min="0" max="10"><span class="range-text">~</span><input type="number" id="boardMax" value="6" step="1" min="0" max="20"><span>板</span></div><div class="filter-item"><label><input type="checkbox" id="priceRangeEnable" checked> 股价</label><input type="number" id="priceMin" value="2" step="1" min="0.5" max="500"><span class="range-text">~</span><input type="number" id="priceMax" value="100" step="5" min="1" max="2000"><span>元</span></div></div><div class="filter-actions"><button id="applyFilterBtn" class="tdx-export-btn" style="background:#ff5c5c;">应用筛选</button><button id="resetFilterBtn" class="tdx-export-btn reset-filter-btn"><i class="fa fa-undo"></i> 重置</button><button id="lockFilterBtn" class="tdx-export-btn lock-filter-btn">🔒 锁定</button><span class="lock-indicator" id="lockIndicator">🔒 筛选锁定</span></div></div></div>
+
+    <div class="medal-section" id="medalArea"><div class="loading-placeholder">加载智选数据...</div></div>
+    <div style="display:flex; justify-content:flex-end; margin:6px 0;"><div><span style="color:#ffbcbc;">导出前</span><select id="medalExportCount" class="export-select"><option value="3">3只</option><option value="5" selected>5只</option><option value="8">8只</option><option value="10">10只</option></select><button id="exportMedalBtn" class="tdx-export-btn"><i class="fa fa-download"></i> 导出代码</button></div></div>
+
+    <div class="stock-pool-panel"><div class="pool-header"><div class="pool-title"><i class="fa fa-database"></i> 策略股票池 (前五智选) <span id="autoAddStatusTag">⏳ 9:30前自动收录前五</span><span id="poolExpiryInfo" style="font-size:11px; margin-left:8px;"></span></div><div class="pool-buttons"><button id="manualAddCurrentBtn" class="pool-btn"><i class="fa fa-plus-circle"></i> 加入当前前五入池</button><button id="clearPoolBtn" class="pool-btn"><i class="fa fa-trash-o"></i> 清空池</button><button id="exportPoolBtn" class="pool-btn"><i class="fa fa-share-square-o"></i> 导出池</button></div></div><div id="poolListContainer" class="pool-list"><div class="empty-pool">暂无股票，9:30前系统自动将前五名选入池中</div></div></div>
+
+    <!-- 全部股票区域：上方放置导出按钮及统计 -->
+    <div class="flex-between">
+        <div class="stats-badge" id="stockCountBadge">符合条件: --只</div>
+        <button id="exportAllBtn" class="tdx-export-btn"><i class="fa fa-download"></i> 导出全部结果代码</button>
+    </div>
+    <div id="allStockTableArea" class="stock-table-container"><div class="loading-placeholder"><div class="spinner"></div>加载选股数据(四维积分制)...</div></div>
+    <div class="footnote"><i class="fa fa-bullhorn"></i> 评分维度:价格(30)+量能(30)+封单强度(20)+板块地位(20) | 红线(竞价翻绿/量比＜0.3)触发后最高45分 | 竞价涨幅下限默认0%以展示更多标的 | 点击代码唤起通达信/同花顺 · 🌐网页K线 </div>
+</div>
+
+<script>
+    (function(){
+        // 市场范围构建
+        function buildMarketFs(){
+            let parts=[];
+            if(document.getElementById('marketMainBoard')?.checked) parts.push('m:1+t:2','m:0+t:6');
+            if(document.getElementById('marketSciTech')?.checked) parts.push('m:1+t:23');
+            if(document.getElementById('marketGrowth')?.checked) parts.push('m:0+t:80');
+            if(parts.length===0) return 'm:1+t:2,m:0+t:6,m:1+t:23,m:0+t:80';
+            return parts.join(',');
+        }
+        function getStockApiUrl(){ return `https://push2dycalc.eastmoney.com/api/qt/clist/get?fs=${buildMarketFs()}&fltt=2&invt=2&fields=f2,f3,f4,f5,f6,f8,f10,f12,f14,f17,f18,f20,f21,f26,f104,f615,f630,f100,f102,f103&fid=f3&po=1&pn=1&pz=500&np=1&ut=c92c50e6b0fab2c17cd5e276e9a79c42`; }
+
+        let cachedStocks=[], allRawStocks=[], isDataCached=false;
+        let filterSettings={ stSuspend:true, excludeNewStock:true, bidEnabled:true, bidMin:0, bidMax:20, mvEnabled:true, mvMin:5, mvMax:300, boardEnabled:true, boardMin:0, boardMax:6, priceEnabled:true, priceMin:2, priceMax:100 };
+        let isFilterLocked=false; const LOCKED_FILTER_KEY='shunshi_locked_filter_v9';
+        let stockPool=[], autoPoolLockTime=null; const STORAGE_KEY='shunshi_stock_pool_v5', LOCK_DURATION_MS=10*3600000;
+        
+        // 辅助函数
+        function getListingDays(str){ if(!str)return null; let s=str.toString(); if(s.length===8){ let y=parseInt(s.substr(0,4)),m=parseInt(s.substr(4,2))-1,d=parseInt(s.substr(6,2)); return (new Date()-new Date(y,m,d))/(86400000); } return null; }
+        function isST(n){ return n.includes('ST')||n.includes('*ST'); }
+        function isSuspended(s){ return (s.f4||0)<=0||(s.f5||0)===0; }
+        function getBidChange(s){ let v=(s.f615!=null && !isNaN(s.f615))?parseFloat(s.f615):parseFloat(s.f3||0); return v; }
+        function getEntityChange(s){ let o=parseFloat(s.f17||0),c=parseFloat(s.f2||0); return o===0?0:((c-o)/o)*100; }
+        // 模拟量比: 基于竞价换手率映射量比阈值（符合常规）
+        function getSimulatedVolumeRatio(stock){ let bidTurn = 0; try{ let bv=parseFloat(stock.f5||0), mv=parseFloat(stock.f10||0), p=parseFloat(stock.f2||0); if(mv>0 && p>0 && bv>0) bidTurn = (bv * p) / (mv * 100); }catch(e){} if(bidTurn>=0.8) return 1.5; if(bidTurn>=0.5) return 1.0; if(bidTurn>=0.3) return 0.5; if(bidTurn>=0.15) return 0.3; return 0.2; }
+        function getVolumeScoreFromRatio(ratio){ if(ratio>=1.5) return 30; if(ratio>=1.0) return 25; if(ratio>=0.5) return 20; if(ratio>=0.3) return 10; return 0; }
+        function checkRedLine(bidChange, volumeRatio){ return (bidChange<0) || (volumeRatio<0.3); }
+
+        function getSectorScore(stock, sectorRankMap){ let industry=stock.industry||''; if(!industry) return 5; let rankInfo=sectorRankMap.get(industry); if(!rankInfo) return 5; let rank=rankInfo.rankMap.get(stock.code)||999; let total=rankInfo.total; let mv=stock.circulationMV||0; let isTop= rank<=Math.max(1,Math.floor(total*0.15)); let isFront= rank<=Math.max(3,Math.floor(total*0.3)); if(isTop && mv<80) return 20; if(isTop) return 18; if(isFront && mv<120) return 15; if(isFront) return 12; if(rank<=Math.min(8,total*0.5)) return 8; return 5; }
+        
+        function getStrengthScore(stock, volumeRatio){ let price=stock.price, yesterdayClose=stock.rawStock?.f4; if(!yesterdayClose||yesterdayClose<=0) return 12; let limitUpPct= (stock.code.startsWith('688')||stock.code.startsWith('30'))?0.2:0.1; let limitPrice=yesterdayClose*(1+limitUpPct); let distanceToLimit=Math.max(0,(limitPrice-price)/limitPrice); let priceStability=10*(1-Math.min(1,distanceToLimit)); let momentum=Math.min(10, (volumeRatio/1.5)*10); let total=priceStability+momentum; return Math.min(20,Math.max(10,total)); }
+        
+        function getPriceScore(bidChange, stock){ let price=stock.price, yesterdayClose=stock.rawStock?.f4; let isYiZi=false; if(yesterdayClose && yesterdayClose>0){ if(price/yesterdayClose>=0.995 && bidChange>=9.5) isYiZi=true; } if(isYiZi) return 30; if(bidChange>=9.9) return 30; if(bidChange>=7) return 25; if(bidChange>=5) return 20; if(bidChange>=3) return 10; if(bidChange<0) return 0; return 5; }
+
+        function computeNewScore(stock, sectorRankMap){
+            let bidChange=stock.bidChange;
+            let volRatio=getSimulatedVolumeRatio(stock.rawStock);
+            let priceScore=getPriceScore(bidChange, stock);
+            let volumeScore=getVolumeScoreFromRatio(volRatio);
+            let strengthScore=getStrengthScore(stock, volRatio);
+            let sectorScore=getSectorScore(stock, sectorRankMap);
+            let total=priceScore+volumeScore+strengthScore+sectorScore;
+            let redLineTrigger=checkRedLine(bidChange, volRatio);
+            if(redLineTrigger) total=Math.min(total,45);
+            total=Math.min(100,Math.max(0,total));
+            let confidence= total>=80?88: total>=70?78: total>=60?70: total>=50?62: total>=40?52:45;
+            return { total:Math.round(total), confidence:Math.round(confidence), redFlag:redLineTrigger };
+        }
+
+        function buildSectorRankMap(stocksArr){
+            let sectorMap=new Map();
+            stocksArr.forEach(s=>{ let ind=s.industry||''; if(ind){ if(!sectorMap.has(ind)) sectorMap.set(ind,[]); sectorMap.get(ind).push({code:s.code,bidChange:s.bidChange}); } });
+            let rankMap=new Map();
+            for(let [ind,list] of sectorMap.entries()){ list.sort((a,b)=>b.bidChange-a.bidChange); let rmap=new Map(); list.forEach((item,idx)=>rmap.set(item.code,idx+1)); rankMap.set(ind,{rankMap:rmap,total:list.length}); }
+            return rankMap;
+        }
+
+        function applyNewFilters(stockList){ return stockList.filter(item=>{ let raw=item.rawStock; if(filterSettings.stSuspend && (isST(item.name)||isSuspended(raw))) return false; if(filterSettings.excludeNewStock && raw && raw.f26){ let days=getListingDays(raw.f26); if(days!==null && days<60) return false; } let bid=item.bidChange; if(filterSettings.bidEnabled && (bid<filterSettings.bidMin || bid>=filterSettings.bidMax)) return false; let mv=item.circulationMV; if(filterSettings.mvEnabled && (mv<filterSettings.mvMin || mv>filterSettings.mvMax)) return false; let board=item.boardCount; if(filterSettings.boardEnabled && (board<filterSettings.boardMin || board>filterSettings.boardMax)) return false; let price=item.price; if(filterSettings.priceEnabled && (price<filterSettings.priceMin || price>filterSettings.priceMax)) return false; return true; }); }
+
+        function processAllStocks(rawStocks){
+            let baseList=rawStocks.map(stock=>{
+                let bidChange=getBidChange(stock);
+                let realChange=parseFloat(stock.f3||0);
+                let circulationMV=parseFloat(stock.f21||0)/100000000;
+                let price=parseFloat(stock.f2||0);
+                let boardCount=0; if(stock.f104) boardCount=Math.min(parseInt(stock.f104)||0,20);
+                let warnType=parseInt(stock.f630||0);
+                let industry=stock.f100||'-';
+                let concept=stock.f103||'-';
+                return { code:stock.f12, name:stock.f14, bidChange, realChange, circulationMV, price, boardCount, warnType, industry, concept, rawStock:stock, entityChange:getEntityChange(stock) };
+            });
+            let sectorRankMap=buildSectorRankMap(baseList);
+            let enriched=baseList.map(stk=>{ let {total,confidence}=computeNewScore(stk, sectorRankMap); stk.probability=total; stk.confidence=confidence; return stk; });
+            enriched.sort((a,b)=>b.probability - a.probability);
+            return applyNewFilters(enriched);
+        }
+
+        function generateMockRawStocks() {
+            const names = ['科技龙头', '新能源A', '医药创新', '消费升级', '金融服务', '智能制造', '周期复苏', '成长潜力', '价值投资', '蓝筹精选', '半导体', '光伏产业', '锂电池', '人工智能', '数字经济'];
+            const industries = ['电子元件', '新能源', '医药生物', '食品饮料', '银行', '机械设备', '化工', '计算机', '家用电器', '汽车'];
+            const concepts = ['光伏概念|新能源', '锂电池|新能源车', '人工智能|ChatGPT', '半导体|芯片', '一带一路', '国企改革', '数字经济', '军工|航天', '元宇宙|虚拟现实', '跨境电商'];
+            
+            const mockStocks = [];
+            for (let i = 0; i < 50; i++) {
+                const code = ['60', '00', '30', '68'][i % 4] + String(1000 + i).padStart(4, '0');
+                const name = names[i % names.length] + (Math.floor(i / names.length) + 1);
+                const price = parseFloat((Math.random() * 150 + 2).toFixed(2));
+                const mvYi = parseFloat((Math.random() * 200 + 5).toFixed(2));
+                const f21 = Math.round(mvYi * 100000000);
+                const f3 = parseFloat((Math.random() * 10 - 2).toFixed(2));
+                const f615 = parseFloat((Math.random() * 14 + 1).toFixed(2));
+                const f104 = Math.floor(Math.random() * 4);
+                const f26 = new Date(Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+                
+                mockStocks.push({
+                    f2: price,
+                    f3: f3,
+                    f4: price / (1 + f3 / 100),
+                    f5: Math.random() * 100000 + 10000,
+                    f6: price * (1 + Math.random() * 0.05 - 0.025),
+                    f8: Math.random() * 5 + 0.5,
+                    f10: Math.random() * 5 + 0.5,
+                    f12: code,
+                    f14: name,
+                    f17: price * (1 + Math.random() * 0.02 - 0.01),
+                    f18: f104,
+                    f20: Math.round(mvYi * 100000000 / price),
+                    f21: f21,
+                    f26: f26,
+                    f100: industries[i % industries.length],
+                    f102: ['北京', '上海', '广东', '浙江', '江苏', '四川'][i % 6],
+                    f103: concepts[i % concepts.length],
+                    f104: f104,
+                    f615: f615,
+                    f630: Math.floor(Math.random() * 3)
+                });
+            }
+            return mockStocks;
+        }
+
+        async function fetchAndCache(){
+            try{ document.getElementById('allStockTableArea').innerHTML='<div class="loading-placeholder"><div class="spinner"></div>四维评分中(价格/量能/封单/板块地位)...</div>';
+                let resp=await fetch(getStockApiUrl()); let json=await resp.json();
+                if(json.rc!==0||!json.data?.diff) throw new Error('数据异常');
+                allRawStocks=json.data.diff; cachedStocks=processAllStocks(allRawStocks); isDataCached=true; renderAll(); showToast('✅ 评分完成(四维积分制)','success');
+            } catch(e){ 
+                console.warn('API失败，使用模拟数据:', e.message);
+                allRawStocks=generateMockRawStocks(); 
+                cachedStocks=processAllStocks(allRawStocks); 
+                isDataCached=true; 
+                renderAll(); 
+                showToast('⚠️ API失败，已使用模拟数据','warning'); 
+            }
+        }
+        function updateRealTimeOnly(){ if(!isDataCached){ fetchAndCache(); return; } fetch(getStockApiUrl()).then(r=>r.json()).then(json=>{ if(json.data?.diff) json.data.diff.forEach(s=>{ let it=cachedStocks.find(x=>x.code===s.f12); if(it){ it.realChange=parseFloat(s.f3||0); it.entityChange=getEntityChange(s); } }); renderAll(); showToast('实时涨幅已更新','success'); }).catch(()=>showToast('更新失败','error')); }
+        function reLockData(){ isDataCached=false; cachedStocks=[]; allRawStocks=[]; fetchAndCache(); }
+        function exportStocks(count){ var list=cachedStocks.slice(0,count); if(!list.length){ showToast('无数据','error'); return; } var txt=list.map(function(it){ return (it.code||'')+(it.name?(' '+it.name):''); }).filter(Boolean).join('\n'); copyText(txt,'✅ 已复制 '+list.length+' 只股票代码'); }
+        window.openWebKline=function(code){if(!code)return;let m=code.startsWith("6")||code.startsWith("9")?"sh":(code.startsWith("4")||code.startsWith("8")?"bj":"sz");window.open("https://quote.eastmoney.com/"+m+code+".html","_blank");};
+        window.linkToSoftware=function(code){ if(!code)return; openStockKline(code); };
+        
+        function renderMedalArea(){
+            let container=document.getElementById('medalArea');
+            if(!cachedStocks.length){ container.innerHTML='<div class="empty-state">暂无符合条件股票</div>'; return; }
+            let tops=cachedStocks.slice(0,5);
+            let rankNames=['🏅 金牌','🥈 银牌','🥉 铜牌','第四名','第五名'];
+            let html=''; tops.forEach((item,idx)=>{ let realCls=item.realChange<item.bidChange?'green-real':''; html+=`<div class="medal-card"><div class="medal-rank">${rankNames[idx]}</div><div class="medal-name-big">${item.name}</div><div class="medal-code" onclick="linkToSoftware('${item.code}')">${item.code}<span class="web-kline-btn" onclick="event.stopPropagation();openWebKline('${item.code}')" title="网页K线">🌐</span></div><div class="medal-prob-big">${item.probability}分</div><div class="medal-detail"><span>竞涨幅${item.bidChange>0?'+':''}${item.bidChange.toFixed(2)}%</span><span>可信${item.confidence}%</span></div><div class="medal-real-chg ${realCls}">实时涨幅${item.realChange>0?'+':''}${item.realChange.toFixed(2)}%</div></div>`; });
+            container.innerHTML=html;
+            document.getElementById('stockCountBadge').innerHTML=`符合条件: ${cachedStocks.length}只`;
+        }
+        function renderAllStockTable(){
+            let container=document.getElementById('allStockTableArea');
+            if(!isDataCached||!cachedStocks.length){ container.innerHTML='<div class="empty-state">暂无符合条件股票</div>'; return; }
+            let html=`<table class="stock-table"><thead><tr><th>排名</th><th>代码</th><th>名称</th><th>竞价涨幅</th><th>实时涨幅</th><th>实体涨幅</th><th>流通市值(亿)</th><th>异动</th><th>行业</th><th>概念</th><th>综合评分(总分)</th><th>可信度</th></tr></thead><tbody>`;
+            cachedStocks.forEach((item,idx)=>{ let rc=item.realChange<item.bidChange?'real-green':(item.realChange>0?'up':'down'); let warnL=item.warnType===5?'🔥强':item.warnType===4?'⚡中':item.warnType===3?'↑弱':'-'; let mvDisplay=item.circulationMV?item.circulationMV.toFixed(2):'0.00'; html+=`<tr><td class="rank-col">${idx+1}</td><td class="code-click" onclick="linkToSoftware('${item.code}')">${item.code}<span class="web-kline-btn" onclick="event.stopPropagation();openWebKline('${item.code}')" title="网页K线">🌐</span></td><td>${item.name}</td><td class="${item.bidChange>0?'up':'down'}">${item.bidChange>0?'+':''}${item.bidChange.toFixed(2)}%</td><td class="${rc}">${item.realChange>0?'+':''}${item.realChange.toFixed(2)}%</td><td class="${item.entityChange>0?'up':'down'}">${item.entityChange>0?'+':''}${item.entityChange.toFixed(2)}%</td><td>${mvDisplay}</td><td>${warnL}</td><td>${item.industry}</td><td style="max-width:180px;">${item.concept}</td><td class="up">${item.probability}分</td><td>${item.confidence}%</td></tr>`; });
+            container.innerHTML=html+'</tbody></table>';
+        }
+        function renderAll(){ renderMedalArea(); renderAllStockTable(); }
+        
+        function readFilterFromDOM(){ filterSettings={ stSuspend:document.getElementById('filterST').checked, excludeNewStock:document.getElementById('filterNewStock').checked, bidEnabled:document.getElementById('bidRangeEnable').checked, bidMin:parseFloat(document.getElementById('bidMin').value)||0, bidMax:parseFloat(document.getElementById('bidMax').value)||20, mvEnabled:document.getElementById('mvRangeEnable').checked, mvMin:parseFloat(document.getElementById('mvMin').value)||5, mvMax:parseFloat(document.getElementById('mvMax').value)||300, boardEnabled:document.getElementById('boardRangeEnable').checked, boardMin:parseInt(document.getElementById('boardMin').value)||0, boardMax:parseInt(document.getElementById('boardMax').value)||6, priceEnabled:document.getElementById('priceRangeEnable').checked, priceMin:parseFloat(document.getElementById('priceMin').value)||2, priceMax:parseFloat(document.getElementById('priceMax').value)||100 }; }
+        function updateFilterInputsFromSettings(s){ document.getElementById('filterST').checked=s.stSuspend; document.getElementById('filterNewStock').checked=s.excludeNewStock; document.getElementById('bidRangeEnable').checked=s.bidEnabled; document.getElementById('bidMin').value=s.bidMin; document.getElementById('bidMax').value=s.bidMax; document.getElementById('mvRangeEnable').checked=s.mvEnabled; document.getElementById('mvMin').value=s.mvMin; document.getElementById('mvMax').value=s.mvMax; document.getElementById('boardRangeEnable').checked=s.boardEnabled; document.getElementById('boardMin').value=s.boardMin; document.getElementById('boardMax').value=s.boardMax; document.getElementById('priceRangeEnable').checked=s.priceEnabled; document.getElementById('priceMin').value=s.priceMin; document.getElementById('priceMax').value=s.priceMax; }
+        function updateFilterLockUI(){ let box=document.getElementById('filterBox'),btn=document.getElementById('lockFilterBtn'),ind=document.getElementById('lockIndicator'),applyBtn=document.getElementById('applyFilterBtn'),resetBtn=document.getElementById('resetFilterBtn'); if(isFilterLocked){ box.classList.add('filter-locked'); btn.classList.add('locked'); btn.innerHTML='🔓 解锁'; ind.style.display='inline-block'; if(applyBtn) applyBtn.disabled=true; if(resetBtn) resetBtn.disabled=true; }else{ box.classList.remove('filter-locked'); btn.classList.remove('locked'); btn.innerHTML='🔒 锁定'; ind.style.display='none'; if(applyBtn) applyBtn.disabled=false; if(resetBtn) resetBtn.disabled=false; } }
+        function saveLockedFilter(s){ localStorage.setItem(LOCKED_FILTER_KEY,JSON.stringify({locked:true,settings:s})); }
+        function clearLockedFilter(){ localStorage.removeItem(LOCKED_FILTER_KEY); }
+        function loadLockedFilter(){ try{ let d=localStorage.getItem(LOCKED_FILTER_KEY); if(d){ let p=JSON.parse(d); if(p.locked&&p.settings) return p; } }catch(e){} return null; }
+        function toggleFilterLock(){ if(isFilterLocked){ isFilterLocked=false; clearLockedFilter(); updateFilterLockUI(); showToast('🔓 筛选已解锁','success'); }else{ readFilterFromDOM(); saveLockedFilter(filterSettings); isFilterLocked=true; updateFilterLockUI(); showToast('🔒 筛选锁定','success'); } }
+        function initLockState(){ let lockedData=loadLockedFilter(); if(lockedData&&lockedData.settings){ isFilterLocked=true; filterSettings={...lockedData.settings}; updateFilterInputsFromSettings(filterSettings); updateFilterLockUI(); }else{ isFilterLocked=false; updateFilterInputsFromSettings(filterSettings); updateFilterLockUI(); } }
+        function applyCustomFilter(){ if(isFilterLocked){ showToast('🔒 已锁定,请先解锁','error'); return; } readFilterFromDOM(); if(isDataCached&&allRawStocks.length){ cachedStocks=processAllStocks(allRawStocks); renderAll(); showToast('筛选已应用(四维评分)','success'); }else fetchAndCache(); }
+        function resetFilterToDefault(){ if(isFilterLocked){ showToast('锁定状态无法重置','error'); return; } let def={ stSuspend:true, excludeNewStock:true, bidEnabled:true, bidMin:0, bidMax:20, mvEnabled:true, mvMin:5, mvMax:300, boardEnabled:true, boardMin:0, boardMax:6, priceEnabled:true, priceMin:2, priceMax:100 }; filterSettings={...def}; updateFilterInputsFromSettings(filterSettings); if(isDataCached&&allRawStocks.length){ cachedStocks=processAllStocks(allRawStocks); renderAll(); } showToast('重置默认筛选(竞价下限0%)','success'); }
+        
+        function loadPoolFromStorage(){ try{ let r=localStorage.getItem(STORAGE_KEY); if(r){ let d=JSON.parse(r); if(d.autoPoolLockTime && Date.now()-d.autoPoolLockTime>LOCK_DURATION_MS) return {stocks:[],autoPoolLockTime:null}; return {stocks:d.stocks||[],autoPoolLockTime:d.autoPoolLockTime||null}; } }catch(e){} return {stocks:[],autoPoolLockTime:null}; }
+        function savePoolToStorage(){ localStorage.setItem(STORAGE_KEY,JSON.stringify({stocks:stockPool,autoPoolLockTime})); }
+        function renderStockPool(){ let c=document.getElementById('poolListContainer'); if(!stockPool.length){ c.innerHTML='<div class="empty-pool">暂无股票，9:30前系统自动将前五名选入池中</div>'; return; } let h=''; stockPool.forEach(item=>{ h+=`<div class="pool-item"><div><div>${item.name}</div><div class="pool-stock-code" onclick="linkToSoftware('${item.code}')">${item.code}<span class="web-kline-btn" onclick="event.stopPropagation();openWebKline('${item.code}')" title="网页K线">🌐</span></div><div style="font-size:10px;">📅 ${item.addTime}</div></div><button class="del-single" data-code="${item.code}">移除</button></div>`; }); c.innerHTML=h; document.querySelectorAll('.del-single').forEach(b=>{ b.onclick=()=>{ stockPool=stockPool.filter(s=>s.code!==b.dataset.code); savePoolToStorage(); renderStockPool(); }; }); }
+        function addStocksToPool(stks){ stks.forEach(s=>{ if(!stockPool.some(x=>x.code===s.code)) stockPool.push({code:s.code,name:s.name,addTime:new Date().toLocaleTimeString()}); }); savePoolToStorage(); renderStockPool(); }
+        function manualAddCurrentTop5(){ if(cachedStocks.length) addStocksToPool(cachedStocks.slice(0,5)); else showToast('无数据','error'); }
+        function autoAddTask(){ let h=new Date().getHours(),m=new Date().getMinutes(); if(autoPoolLockTime && stockPool.length && Date.now()-autoPoolLockTime<=LOCK_DURATION_MS) return; if((h<9||(h===9&&m<30)) && cachedStocks.length && !stockPool.length){ addStocksToPool(cachedStocks.slice(0,5)); autoPoolLockTime=Date.now(); savePoolToStorage(); renderStockPool(); } }
+        function clearPool(){ stockPool=[]; autoPoolLockTime=null; savePoolToStorage(); renderStockPool(); }
+        function exportPoolToTdx(){ if(!stockPool.length){ showToast('池空','error'); return; } var txt=stockPool.map(function(i){ return (i.code||'')+(i.name?(' '+i.name):''); }).filter(Boolean).join('\n'); copyText(txt,'✅ 已复制股票池 '+stockPool.length+' 只代码'); }
+        function showToast(msg){ let d=document.createElement('div'); d.className='toast-msg'; d.innerHTML=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),2000); }
+        function updateBeijingTime(){ let now=new Date(); let bj=new Date(now.getTime()+8*3600000+now.getTimezoneOffset()*60000); document.querySelector('.time-digital').textContent=bj.toLocaleTimeString('zh-CN',{hour12:false}); document.getElementById('refreshLockedBtn').disabled=!(bj.getHours()<9||(bj.getHours()===9&&bj.getMinutes()<30)); }
+        function onMarketChanged(){ isDataCached=false; cachedStocks=[]; allRawStocks=[]; fetchAndCache(); }
+        
+        function init(){ let poolData=loadPoolFromStorage(); stockPool=poolData.stocks; autoPoolLockTime=poolData.autoPoolLockTime; renderStockPool(); initLockState(); document.getElementById('refreshLockedBtn').onclick=reLockData; document.getElementById('refreshRealTimeBtn').onclick=updateRealTimeOnly; document.getElementById('applyFilterBtn').onclick=applyCustomFilter; document.getElementById('resetFilterBtn').onclick=resetFilterToDefault; document.getElementById('lockFilterBtn').onclick=toggleFilterLock; document.getElementById('exportMedalBtn').onclick=()=>exportStocks(parseInt(document.getElementById('medalExportCount').value)); document.getElementById('exportAllBtn').onclick=()=>exportStocks(cachedStocks.length); document.getElementById('manualAddCurrentBtn').onclick=manualAddCurrentTop5; document.getElementById('clearPoolBtn').onclick=clearPool; document.getElementById('exportPoolBtn').onclick=exportPoolToTdx; ['marketMainBoard','marketSciTech','marketGrowth'].forEach(id=>{ document.getElementById(id).addEventListener('change',onMarketChanged); }); document.getElementById('marketSelectAllBtn').onclick=()=>{ ['marketMainBoard','marketSciTech','marketGrowth'].forEach(id=>document.getElementById(id).checked=true); onMarketChanged(); }; fetchAndCache(); setInterval(updateBeijingTime,1000); setInterval(autoAddTask,20000); }
+        window.addEventListener('DOMContentLoaded', init);
+    })();
+
+// ===== 手机版适配补丁：剪贴板助手（替换通达信导出） =====
+(function(){
+function copyText(text, msg){
+  var showMsg=function(m){
+    var d=document.createElement('div');
+    d.style.cssText='position:fixed;bottom:44px;left:50%;transform:translateX(-50%);background:#ff3a3a;color:#fff;padding:9px 20px;border-radius:30px;font-size:13px;z-index:99999;max-width:90%;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,0.4);';
+    d.textContent=m;
+    document.body.appendChild(d);
+    setTimeout(function(){ if(d.parentNode) d.parentNode.removeChild(d); },2600);
+  };
+  var done=function(){ showMsg(msg||'已复制到剪贴板'); };
+  var fb=function(t,cb){
+    try{
+      var ta=document.createElement('textarea');
+      ta.value=t; ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try{ document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(ta);
+    }catch(e){}
+    cb();
+  };
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(function(){ fb(text,done); });
+    } else fb(text,done);
+  }catch(e){ fb(text,done); }
+}
+window.copyText=copyText;
+})();
+
+// ===== K线打开：优先唤起手机通达信/同花顺App，失败自动回退网页K线 =====
+function _stkPref(){
+  try{ var v=localStorage.getItem('stk_kline_pref'); if(v) return v; }catch(e){}
+  return 'auto';
+}
+function openStockKline(code){
+  if(!code) return;
+  code=String(code).replace(/[^0-9]/g,'').slice(0,6);
+  if(!code) return;
+  var p=_stkPref();
+  if(p==='web'){ _stkWeb(code); return; }
+  var list=[];
+  if(p==='tdx'||p==='auto') list.push('tdx://'+code);
+  if(p==='ths'||p==='auto') list.push('amihexin://?type=stock&code='+code);
+  _stkTry(code,list,0);
+}
+function _stkTry(code,list,i){
+  if(i>=list.length){ _stkWeb(code); return; }
+  var hit=false;
+  var done=function(){ hit=true; };
+  document.addEventListener('visibilitychange',done);
+  window.addEventListener('pagehide',done);
+  window.addEventListener('blur',done);
+  try{ window.location.href=list[i]; }catch(e){}
+  setTimeout(function(){
+    document.removeEventListener('visibilitychange',done);
+    window.removeEventListener('pagehide',done);
+    window.removeEventListener('blur',done);
+    if(hit || (typeof document.hidden==='boolean' && document.hidden)) return;
+    _stkTry(code,list,i+1);
+  },900);
+}
+function _stkWeb(code){
+  var mk=/^(60|68|90)/.test(code)?'sh':(/^(00|30)/.test(code)?'sz':'bj');
+  try{ if(typeof openWebKline==='function'){ openWebKline(code); return; } }catch(e){}
+  try{ if(typeof openKline==='function'){ openKline(code); return; } }catch(e){}
+  window.open('https://quote.eastmoney.com/'+mk+code+'.html','_blank');
+}
+function _stkPrefLabel(p){
+  return p==='tdx'?'通达信':(p==='ths'?'同花顺':(p==='web'?'网页K线':'自动'));
+}
+</script>
+</body>
+</html>
